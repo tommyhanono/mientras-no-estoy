@@ -760,13 +760,16 @@ function fmtBoxCd(n){
   if(h>0) return "en "+h+"h "+m+"m";
   return "en "+m+"m";
 }
-var _clk=null;
+var _clk=null, _lastRD=null;
 function startClocks(){
+  _lastRD=realDay();
   function tick(){
     $("#reunionCd").textContent = fmtReunion();
     var rd=realDay(); var shown=Math.max(1,Math.min(14,rd||1));
     $("#dayChip").textContent = "Día "+shown+" de 14";
     $("#progFill").style.width = (Math.max(0,Math.min(14,rd))/14*100)+"%";
+    // a new day just unlocked (e.g. app left open across Panamá midnight): rebuild the grid
+    if(rd!==_lastRD){ _lastRD=rd; buildGrid(); }
     $$("#grid .box.locked .mini").forEach(function(m){
       var n=+m.getAttribute("data-cd"); if(n) m.textContent=fmtBoxCd(n);
     });
@@ -880,7 +883,7 @@ function openDay(n){
 }
 function closeDay(){
   var d=$("#day"); d.classList.remove("on");
-  setTimeout(function(){ d.classList.add("hidden"); refreshHomeDynamic(); },320);
+  setTimeout(function(){ if(!d.classList.contains("on")){ d.classList.add("hidden"); refreshHomeDynamic(); } },320);
 }
 
 /* rituals appended to activity (days 1-13) */
@@ -920,7 +923,8 @@ function addRituals(container, n){
         if(p<1) requestAnimationFrame(anim); else { upd(); S.extra[n]=+r.value; save(); } })(t0);
     } else { S.extra[n]=+r.value; save(); upd(); }
   });
-  if(S.extra[n]!=null){ /* keep */ }
+  // persist a starting value on first open so the day-7 & day-14 charts are never empty
+  if(S.extra[n]==null){ S.extra[n]=saved; save(); }
 
   // wire whatsapp answer (dynamic on click)
   ans.addEventListener("input",function(){ S.answers[n]=ans.value; save(); });
@@ -1420,6 +1424,8 @@ RENDER[14]=function(act,n){
 
 function doReveal(container){
   container.innerHTML="";
+  // day 14 has no slider; give it a symbolic peak so the finale chart reads as 14 full days
+  if(S.extra[14]==null){ S.extra[14]=100; save(); }
   var steps=[];
   // 1 video
   steps.push(function(){
