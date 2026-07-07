@@ -151,8 +151,9 @@ input.txt:focus,textarea.txt:focus{border-color:var(--gold);box-shadow:0 0 0 3px
 
 /* ============ DAY VIEW ============ */
 #day{position:fixed;inset:0;z-index:30;background:radial-gradient(130% 90% at 50% -5%, #2a1440, var(--bg1) 62%, var(--bg4));
-  overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;transform:translateY(16px);transition:opacity .3s, transform .35s;padding-bottom:env(safe-area-inset-bottom)}
-#day.on{opacity:1;transform:none}
+  overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;transform:translateY(16px);transition:opacity .3s, transform .35s;padding-bottom:env(safe-area-inset-bottom);
+  pointer-events:none}
+#day.on{opacity:1;transform:none;pointer-events:auto}
 .dwrap{max-width:480px;margin:0 auto;padding:16px 18px 70px;padding-top:calc(10px + env(safe-area-inset-top))}
 .dtop{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:5;
   padding:8px 0 10px;margin-bottom:4px;background:linear-gradient(180deg, var(--bg1) 55%, transparent)}
@@ -435,7 +436,7 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bor
 </div>
 
 <!-- DAY VIEW -->
-<div id="day"><div class="dwrap" id="dwrap"></div></div>
+<div id="day" class="hidden"><div class="dwrap" id="dwrap"></div></div>
 
 <!-- FX -->
 <canvas id="confetti"></canvas>
