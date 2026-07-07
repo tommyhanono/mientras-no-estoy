@@ -1,0 +1,1510 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b1026">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Mientras No Estoy 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Cormorant+Garamond:ital,wght@0,500;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg1:#0a0e24; --bg2:#1a0f30; --bg3:#2b1038; --bg4:#0d0a1e;
+  --gold:#e9c877; --gold2:#f4dd9a; --gold-deep:#c79b45; --gold-soft:rgba(233,200,119,.16);
+  --ink:#f5ecdd; --ink-dim:rgba(245,236,221,.62); --ink-faint:rgba(245,236,221,.32);
+  --plum:#3a1a48; --rose:#e79aa8;
+  --serif:'Playfair Display', Georgia, 'Times New Roman', serif;
+  --serif2:'Cormorant Garamond', Georgia, serif;
+  --sans:-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --card:rgba(255,255,255,.05); --line:rgba(233,200,119,.22);
+  --shadow:0 18px 50px rgba(0,0,0,.55);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  font-family:var(--sans); color:var(--ink);
+  background:radial-gradient(140% 100% at 50% -10%, #2c1442 0%, var(--bg2) 34%, var(--bg1) 68%, var(--bg4) 100%) fixed;
+  min-height:100vh; overflow-x:hidden; line-height:1.5;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  padding-top:env(safe-area-inset-top);
+}
+button,input,textarea{font-family:inherit}
+img{max-width:100%;display:block}
+::selection{background:var(--gold-soft)}
+
+/* particles */
+#particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.pt{position:absolute;bottom:-12px;border-radius:50%;
+  background:radial-gradient(circle at 40% 35%, #fff7e0, var(--gold) 55%, transparent 72%);
+  opacity:0;animation:rise linear infinite;filter:blur(.3px)}
+@keyframes rise{0%{transform:translateY(0) translateX(0);opacity:0}
+  10%{opacity:.75}90%{opacity:.5}100%{transform:translateY(-108vh) translateX(var(--drift));opacity:0}}
+
+.wrap{position:relative;z-index:2;max-width:480px;margin:0 auto;padding:0 18px 60px;padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+.hidden{display:none!important}
+.fade-in{animation:fadeUp .6s cubic-bezier(.22,.9,.28,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ============ LOCK SCREEN ============ */
+#lock{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:34px;text-align:center;background:radial-gradient(120% 90% at 50% 0%, #2c1442, var(--bg1) 70%, var(--bg4))}
+#lock .seal{font-size:56px;filter:drop-shadow(0 6px 18px rgba(233,200,119,.4));animation:beat 2.6s ease-in-out infinite}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.09)}}
+#lock h1{font-family:var(--serif);font-weight:600;font-size:26px;margin:18px 0 6px;letter-spacing:.3px}
+#lock .sub{color:var(--gold2);font-family:var(--serif2);font-size:19px;font-style:italic;margin-bottom:28px}
+#lock .q{font-size:16px;color:var(--ink-dim);margin-bottom:16px;max-width:320px;line-height:1.55}
+.field{width:100%;max-width:320px}
+input.txt,textarea.txt{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:14px;
+  padding:15px 16px;color:var(--ink);font-size:16px;outline:none;transition:border .25s, box-shadow .25s}
+input.txt:focus,textarea.txt:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;max-width:320px;
+  background:linear-gradient(135deg,var(--gold2),var(--gold-deep));color:#221606;font-weight:700;font-size:16px;
+  border:none;border-radius:14px;padding:15px 18px;margin-top:14px;cursor:pointer;
+  box-shadow:0 10px 26px rgba(201,155,69,.36);transition:transform .12s, box-shadow .2s;letter-spacing:.2px}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent;color:var(--gold2);border:1px solid var(--line);box-shadow:none;font-weight:600}
+.btn.wa{background:linear-gradient(135deg,#37e07a,#12a34f);color:#04240f;box-shadow:0 10px 24px rgba(18,163,79,.34)}
+.btn.small{width:auto;max-width:none;padding:12px 16px;font-size:14px;margin-top:0}
+.lockmsg{min-height:22px;margin-top:14px;color:var(--rose);font-family:var(--serif2);font-style:italic;font-size:17px}
+.shake{animation:shake .5s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(2px)}
+  30%,50%,70%{transform:translateX(-6px)}40%,60%{transform:translateX(6px)}}
+
+/* ============ TOP BAR ============ */
+.topbar{position:sticky;top:0;z-index:20;margin:0 -18px 6px;padding:14px 18px 12px;
+  padding-top:calc(14px + env(safe-area-inset-top));
+  background:linear-gradient(180deg, rgba(10,14,36,.92), rgba(10,14,36,.55) 80%, transparent);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.topbar .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.4px;display:flex;align-items:center;gap:7px}
+.brand .cake{font-size:15px}
+.daychip{font-size:12px;font-weight:700;color:var(--gold2);background:var(--gold-soft);border:1px solid var(--line);
+  padding:5px 11px;border-radius:999px;white-space:nowrap}
+.countbar{margin-top:9px;display:flex;align-items:center;gap:9px}
+.countbar .cd{font-family:var(--serif2);font-style:italic;font-size:15px;color:var(--ink-dim)}
+.progress{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.progress > i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold-deep),var(--gold2));transition:width .6s}
+
+/* ============ HERO ============ */
+.hero{text-align:center;padding:16px 6px 6px}
+.hero h2{font-family:var(--serif);font-weight:600;font-size:27px;line-height:1.18}
+.hero .u{color:var(--gold2)}
+.hero p{color:var(--ink-dim);font-family:var(--serif2);font-style:italic;font-size:18px;margin-top:6px}
+
+/* ============ GRID ============ */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+.box{position:relative;aspect-ratio:1;border-radius:18px;border:1px solid var(--line);cursor:pointer;
+  background:linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;overflow:hidden;
+  transition:transform .16s, box-shadow .25s, border-color .25s;box-shadow:0 8px 20px rgba(0,0,0,.28)}
+.box:active{transform:scale(.95)}
+.box .num{font-family:var(--serif);font-size:23px;font-weight:600;line-height:1}
+.box .lab{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink-faint)}
+.box .ic{font-size:19px}
+.box.locked{color:var(--ink-faint);background:linear-gradient(160deg, rgba(255,255,255,.035), rgba(255,255,255,.01))}
+.box.locked .num{color:var(--ink-faint)}
+.box.done{border-color:rgba(233,200,119,.5)}
+.box.done::after{content:"✓";position:absolute;top:7px;right:9px;font-size:11px;color:var(--gold2);font-weight:800}
+.box .mini{font-size:9px;color:var(--ink-faint);letter-spacing:.2px}
+.box.today{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold), 0 10px 30px rgba(233,200,119,.28);animation:glow 2.4s ease-in-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 0 0 1px var(--gold),0 8px 22px rgba(233,200,119,.22)}50%{box-shadow:0 0 0 2px var(--gold),0 12px 34px rgba(233,200,119,.5)}}
+.ribbon{position:absolute;top:8px;left:-1px;font-size:8.5px;font-weight:800;letter-spacing:.8px;color:#241704;
+  background:linear-gradient(135deg,var(--gold2),var(--gold-deep));padding:3px 8px 3px 7px;border-radius:0 8px 8px 0;box-shadow:0 3px 8px rgba(0,0,0,.3)}
+.box.vault{grid-column:span 3;aspect-ratio:auto;flex-direction:row;gap:12px;padding:16px 18px;justify-content:flex-start;text-align:left;
+  background:linear-gradient(135deg, #241a35, #17101f);border:1px solid var(--gold);
+  box-shadow:0 0 0 1px rgba(233,200,119,.3), 0 14px 34px rgba(0,0,0,.4)}
+.box.vault .safe{font-size:34px;flex:0 0 auto}
+.box.vault .vt b{font-family:var(--serif);font-size:16px;display:block;margin-bottom:2px;color:var(--gold2)}
+.box.vault .vt span{font-size:11.5px;color:var(--ink-dim);line-height:1.4}
+.box.wobble{animation:wob .5s cubic-bezier(.36,.07,.19,.97)}
+@keyframes wob{15%{transform:translateX(-7px) rotate(-2deg)}30%{transform:translateX(6px) rotate(2deg)}45%{transform:translateX(-5px) rotate(-1.5deg)}60%{transform:translateX(4px)}75%{transform:translateX(-2px)}100%{transform:none}}
+
+.teaser{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
+  background:rgba(20,12,32,.96);border:1px solid var(--line);color:var(--gold2);font-family:var(--serif2);font-style:italic;font-size:16px;
+  padding:11px 20px;border-radius:999px;z-index:60;opacity:0;transition:.3s;box-shadow:var(--shadow);max-width:88vw;text-align:center}
+.teaser.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ============ SECTIONS (home) ============ */
+.section{margin-top:26px;background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:18px 16px}
+.section h3{font-family:var(--serif);font-size:17px;font-weight:600;color:var(--gold2);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.section .hint{font-size:12.5px;color:var(--ink-faint);margin-bottom:14px}
+
+/* diario */
+.diario{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.wchip{background:rgba(255,255,255,.045);border:1px dashed var(--line);border-radius:12px;padding:9px 6px;text-align:center;min-height:52px;display:flex;flex-direction:column;justify-content:center;gap:2px}
+.wchip.got{border-style:solid;border-color:var(--gold);background:var(--gold-soft)}
+.wchip .w{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--gold2);word-break:break-word}
+.wchip .blank{font-size:15px;color:var(--ink-faint);letter-spacing:1px}
+.wchip .dd{font-size:9px;color:var(--ink-faint);letter-spacing:.3px}
+.wchip.got .dd{color:rgba(233,200,119,.6)}
+
+/* puzzle */
+.puzzle-wrap{margin:0 auto;width:min(74%,260px)}
+.puzzle{position:relative;width:100%;aspect-ratio:3/4;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(7,1fr);background:#160c22}
+.ptile{position:relative;background-image:var(--pz);background-size:200% 700%;transition:opacity .5s, filter .6s}
+.ptile.cov{background-image:none!important;background:linear-gradient(135deg, rgba(233,200,119,.14), rgba(58,26,72,.5));
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.ptile.cov::after{content:"🔒";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:.35}
+.puzzle.full .ptile{filter:none}
+.pcount{text-align:center;font-family:var(--serif2);font-style:italic;color:var(--ink-dim);margin-top:10px;font-size:15px}
+
+/* ============ DAY VIEW ============ */
+#day{position:fixed;inset:0;z-index:30;background:radial-gradient(130% 90% at 50% -5%, #2a1440, var(--bg1) 62%, var(--bg4));
+  overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;transform:translateY(16px);transition:opacity .3s, transform .35s;padding-bottom:env(safe-area-inset-bottom)}
+#day.on{opacity:1;transform:none}
+.dwrap{max-width:480px;margin:0 auto;padding:16px 18px 70px;padding-top:calc(10px + env(safe-area-inset-top))}
+.dtop{display:flex;align-items:center;justify-content:space-between;gap:10px;position:sticky;top:0;z-index:5;
+  padding:8px 0 10px;margin-bottom:4px;background:linear-gradient(180deg, var(--bg1) 55%, transparent)}
+.back{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:9px 15px;font-size:14px;cursor:pointer;font-weight:600}
+.back:active{transform:scale(.96)}
+.dtag{font-size:12px;font-weight:700;color:var(--gold2);background:var(--gold-soft);border:1px solid var(--line);padding:6px 12px;border-radius:999px}
+.dtitle{font-family:var(--serif);font-size:26px;font-weight:600;margin:6px 2px 2px;line-height:1.15}
+.opening{font-family:var(--serif2);font-style:italic;font-size:19px;color:var(--gold2);margin:4px 2px 20px;line-height:1.4}
+
+.panel{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:20px 18px;margin-bottom:18px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.letter{font-family:var(--serif);font-size:16.5px;line-height:1.72;white-space:pre-wrap;color:#f2e7d4;letter-spacing:.1px}
+.letter .sig{color:var(--gold2)}
+.tw-cursor::after{content:"▍";color:var(--gold);animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.skiphint{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:12px}
+
+.blocktext{font-family:var(--serif);font-size:16px;line-height:1.7;white-space:pre-wrap;color:#f2e7d4}
+
+.mission{background:linear-gradient(135deg, rgba(231,154,168,.12), rgba(233,200,119,.08));border:1px solid var(--line);
+  border-radius:16px;padding:15px;margin-bottom:16px;font-size:14.5px;line-height:1.5}
+.mission b{color:var(--gold2)}
+
+.gift{background:linear-gradient(135deg,#2a1c12,#231528);border:1px solid var(--gold);border-radius:16px;padding:16px 15px;margin-bottom:18px;
+  box-shadow:0 0 0 1px rgba(233,200,119,.2), 0 10px 26px rgba(0,0,0,.3)}
+.gift .gh{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--gold2);display:flex;align-items:center;gap:7px;margin-bottom:7px}
+.gift p{font-family:var(--serif2);font-style:italic;font-size:17px;color:#f4e6cf;line-height:1.4}
+
+/* ritual */
+.ritual{border-top:1px dashed var(--line);margin-top:8px;padding-top:20px}
+.rlabel{font-size:12px;font-weight:800;letter-spacing:1.2px;color:var(--gold2);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.extra-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-faint);margin:2px 2px 0;text-transform:uppercase;letter-spacing:.5px}
+.extra-lab{text-align:center;font-family:var(--serif2);font-style:italic;font-size:18px;color:var(--gold2);margin:10px 0 4px;min-height:24px}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:99px;outline:none;
+  background:linear-gradient(90deg,#6a3a52,var(--rose),var(--gold2));margin:6px 0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+  background:radial-gradient(circle at 38% 34%,#fff6e2,var(--gold) 60%,var(--gold-deep));cursor:pointer;
+  box-shadow:0 3px 10px rgba(0,0,0,.4), 0 0 0 4px var(--gold-soft);border:none}
+input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;border:none;background:var(--gold)}
+.qday{font-family:var(--serif);font-size:17px;color:#f2e7d4;margin-bottom:12px;line-height:1.4}
+
+/* chart */
+.chart{display:flex;align-items:flex-end;gap:4px;height:130px;padding:8px 4px 0;border-bottom:1px solid var(--line)}
+.chart .bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;height:100%}
+.chart .bar > i{width:74%;max-width:20px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,var(--gold2),var(--gold-deep));min-height:3px;transition:height .8s cubic-bezier(.2,.8,.2,1)}
+.chart .bar > i.empty{background:rgba(255,255,255,.08)}
+.chart .bar > span{font-size:9px;color:var(--ink-faint)}
+
+.sosbar{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.sosbar .btn{flex:1;min-width:140px;margin-top:0}
+
+/* ============ overlays / fx ============ */
+#confetti{position:fixed;inset:0;z-index:70;pointer-events:none}
+.keypop{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:30px;
+  background:rgba(6,5,14,.72);backdrop-filter:blur(4px);opacity:0;transition:opacity .35s}
+.keypop.on{opacity:1}
+.keypop .kc{text-align:center;transform:scale(.5);transition:transform .5s cubic-bezier(.2,1.4,.35,1)}
+.keypop.on .kc{transform:scale(1)}
+.keypop .ky{font-size:60px;filter:drop-shadow(0 8px 20px rgba(233,200,119,.5))}
+.keypop .kt{font-size:14px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-dim);margin-top:14px}
+.keypop .kw{font-family:var(--serif);font-size:40px;font-weight:600;color:var(--gold2);margin-top:4px}
+.keypop .tapaway{margin-top:20px;font-size:12px;color:var(--ink-faint)}
+.heartfx{position:fixed;pointer-events:none;z-index:75;font-size:24px;will-change:transform,opacity}
+
+/* ============ DAY-SPECIFIC ============ */
+/* day2 photo */
+.photo-frame{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);cursor:pointer;box-shadow:var(--shadow)}
+.photo-frame img{width:100%;transition:filter .5s, transform .5s}
+.photo-frame .tapc{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:14px;
+  color:#fff;font-size:13px;letter-spacing:.4px;text-shadow:0 2px 8px #000;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,.35));pointer-events:none}
+.psst{font-size:13px;color:var(--gold2);font-family:var(--serif2);font-style:italic;text-align:center;margin:12px 2px 0}
+
+/* day3 cake */
+.cake-stage{text-align:center;padding:6px 0 4px}
+.cake{position:relative;width:200px;height:150px;margin:8px auto 6px}
+.cake .body{position:absolute;bottom:0;left:0;right:0;height:78px;border-radius:14px 14px 10px 10px;
+  background:linear-gradient(180deg,#f4c9d8,#e79aa8);box-shadow:inset 0 -10px 0 rgba(0,0,0,.06)}
+.cake .icing{position:absolute;bottom:66px;left:0;right:0;height:26px;border-radius:14px 14px 40% 40%;background:#fff5f8;
+  box-shadow:inset 0 -6px 0 rgba(0,0,0,.05)}
+.cake .plate{position:absolute;bottom:-6px;left:-10px;right:-10px;height:12px;border-radius:50%;background:rgba(233,200,119,.4)}
+.candles{position:absolute;bottom:88px;left:0;right:0;display:flex;justify-content:center;flex-wrap:wrap;gap:5px;padding:0 12px}
+.candle{width:6px;height:26px;background:linear-gradient(180deg,#ffe08a,#e79aa8);border-radius:2px;position:relative;cursor:pointer}
+.flame{position:absolute;top:-13px;left:50%;transform:translateX(-50%);width:9px;height:14px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+  background:radial-gradient(circle at 50% 70%,#fff2b0,#ffb03a 55%,#ff6a2a);box-shadow:0 0 10px 2px rgba(255,150,40,.6);animation:flick .5s ease-in-out infinite alternate}
+@keyframes flick{from{transform:translateX(-50%) scale(1) rotate(-3deg)}to{transform:translateX(-52%) scale(1.12) rotate(3deg)}}
+.candle.out .flame{display:none}
+.candle.out{opacity:.6}
+.smoke{position:absolute;top:-10px;left:50%;width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,.5);animation:smk .8s ease-out forwards}
+@keyframes smk{to{transform:translate(-50%,-26px) scale(2.4);opacity:0}}
+.cake-msg{font-family:var(--serif2);font-style:italic;color:var(--gold2);font-size:19px;min-height:26px;margin-top:6px}
+
+/* media slot */
+.mediaslot{border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-bottom:16px;background:#120a1e}
+.mediaslot video{width:100%;display:block;background:#000}
+.slot-ph{padding:30px 18px;text-align:center;font-family:var(--serif2);font-style:italic;color:var(--gold2);font-size:18px;
+  background:linear-gradient(135deg, rgba(233,200,119,.08), rgba(58,26,72,.4))}
+.slot-ph .em{font-size:30px;display:block;margin-bottom:8px;filter:grayscale(.1)}
+
+/* day4 battle */
+.battle{border-radius:20px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+.battle .top{position:relative;background:#160c22}
+.battle .top img{width:100%;display:block;filter:saturate(1.05)}
+.bubble{position:absolute;top:14px;left:14px;right:14px;background:rgba(10,8,20,.82);border:1px solid var(--gold);color:var(--gold2);
+  font-family:var(--serif);font-weight:600;font-size:19px;text-align:center;padding:12px 14px;border-radius:16px;
+  backdrop-filter:blur(3px);opacity:0;transform:translateY(-8px) scale(.9);transition:.25s;line-height:1.25}
+.bubble.show{opacity:1;transform:none}
+.battle .tommy-tag{position:absolute;bottom:10px;left:12px;font-size:11px;color:#fff;background:rgba(0,0,0,.4);padding:3px 9px;border-radius:99px}
+.yomas{width:100%;border:none;padding:26px;font-family:var(--serif);font-weight:700;font-size:30px;letter-spacing:2px;color:#241704;cursor:pointer;
+  background:linear-gradient(135deg,var(--gold2),var(--gold-deep));text-transform:uppercase;transition:transform .08s}
+.yomas:active{transform:scale(.97)}
+.yomas.won{background:linear-gradient(135deg,#e79aa8,#b3546b);color:#2a0d15}
+
+/* quiz */
+.qcard{margin-bottom:6px}
+.qprog{font-size:12px;color:var(--ink-faint);letter-spacing:.5px;margin-bottom:8px}
+.qtext{font-family:var(--serif);font-size:19px;line-height:1.35;margin-bottom:14px}
+.opt{display:block;width:100%;text-align:left;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--ink);
+  border-radius:14px;padding:13px 15px;margin-bottom:10px;font-size:15px;cursor:pointer;transition:.18s;line-height:1.3}
+.opt:active{transform:scale(.98)}
+.opt.correct{background:linear-gradient(135deg,rgba(55,224,122,.25),rgba(18,163,79,.18));border-color:#37e07a;color:#e7f9d6}
+.opt.wrong{background:rgba(231,90,110,.18);border-color:#e75a6e}
+.opt:disabled{cursor:default}
+.qfeed{text-align:center;font-family:var(--serif2);font-style:italic;font-size:17px;min-height:24px;margin-top:6px;color:var(--rose)}
+.qresult{text-align:center}
+.qresult .score{font-family:var(--serif);font-size:44px;color:var(--gold2);font-weight:600}
+.qresult .rmsg{font-family:var(--serif2);font-style:italic;font-size:18px;color:var(--ink);margin:6px 0 4px;line-height:1.4}
+
+/* day6 vale flip */
+.flip{perspective:1200px;margin-bottom:14px;cursor:pointer}
+.flip-inner{position:relative;width:100%;transition:transform .7s cubic-bezier(.3,.8,.3,1);transform-style:preserve-3d}
+.flip.flipped .flip-inner{transform:rotateY(180deg)}
+.ticket{border-radius:18px;padding:20px 18px;border:1px solid var(--gold);min-height:200px;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  background:linear-gradient(135deg,#231528,#180f22);box-shadow:0 0 0 1px rgba(233,200,119,.2), var(--shadow);display:flex;flex-direction:column;justify-content:center}
+.ticket .tt{font-family:var(--serif);font-size:16px;font-weight:600;color:var(--gold2);margin-bottom:12px;text-align:center;letter-spacing:.5px}
+.ticket .tl{font-size:13.5px;line-height:1.65;color:#eadcc6}
+.ticket .tl b{color:var(--gold2)}
+.ticket.back{position:absolute;inset:0;transform:rotateY(180deg);align-items:center;text-align:center}
+.ticket.back .bw{font-size:13px;color:var(--ink-dim);letter-spacing:1px;text-transform:uppercase}
+.ticket.back .bword{font-family:var(--serif);font-size:38px;color:var(--gold2);font-weight:600;margin-top:8px}
+.flip-hint{text-align:center;font-size:12px;color:var(--ink-faint);margin-top:-4px;margin-bottom:14px}
+
+/* audio player */
+.aplayer{display:flex;align-items:center;gap:13px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:16px;padding:13px 15px;margin-bottom:8px}
+.playbtn{flex:0 0 auto;width:50px;height:50px;border-radius:50%;border:none;cursor:pointer;font-size:19px;color:#241704;
+  background:radial-gradient(circle at 38% 34%,#fff6e2,var(--gold) 60%,var(--gold-deep));box-shadow:0 6px 16px rgba(201,155,69,.4);display:flex;align-items:center;justify-content:center}
+.playbtn:active{transform:scale(.94)}
+.abody{flex:1}
+.abody .anm{font-size:13px;color:var(--gold2);margin-bottom:7px;font-family:var(--serif2);font-style:italic}
+.abar{height:7px;border-radius:99px;background:rgba(255,255,255,.1);overflow:hidden;cursor:pointer}
+.abar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-deep),var(--gold2))}
+.atime{display:flex;justify-content:space-between;font-size:10.5px;color:var(--ink-faint);margin-top:5px}
+.songdone{background:linear-gradient(135deg,rgba(233,200,119,.12),rgba(231,154,168,.1));border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;margin-top:12px}
+.songdone .sd{font-family:var(--serif2);font-style:italic;font-size:18px;color:var(--gold2);margin-bottom:12px}
+
+/* day 8 catch */
+.catch{position:relative;height:340px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:radial-gradient(120% 90% at 50% 0%,#241242,#130b22);touch-action:none}
+.heart{position:absolute;top:-40px;font-size:32px;cursor:pointer;user-select:none;will-change:transform;filter:drop-shadow(0 3px 8px rgba(0,0,0,.4))}
+.catch .cwords{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;font-family:var(--serif);font-size:14px;color:var(--gold2);
+  background:linear-gradient(180deg,transparent,rgba(10,8,20,.75));line-height:1.4;text-align:center}
+.catch .cc{position:absolute;top:8px;right:12px;font-size:12px;color:var(--ink-dim);background:rgba(0,0,0,.35);padding:3px 10px;border-radius:99px}
+
+/* day10 scratch */
+.scratch-wrap{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);margin-bottom:6px}
+.scratch-under{padding:26px 20px;min-height:200px;display:flex;flex-direction:column;justify-content:center;text-align:center;
+  background:linear-gradient(135deg,#1d1330,#241542)}
+.scratch-under .sb{font-family:var(--serif);font-size:20px;color:var(--gold2);font-weight:600;margin-bottom:10px}
+.scratch-under .st{font-size:14px;line-height:1.55;color:#eadcc6}
+.scratch-under .corner{position:absolute;bottom:10px;left:12px;font-family:var(--serif);font-size:22px;color:var(--gold2);font-weight:700}
+.scratch-canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+
+/* day12 razones */
+.razon{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:10px;cursor:pointer;transition:.2s;
+  display:flex;align-items:center;gap:12px;min-height:54px}
+.razon .n{font-family:var(--serif);font-size:20px;color:var(--gold-deep);flex:0 0 auto}
+.razon .rt{font-family:var(--serif2);font-style:italic;font-size:18px;color:var(--gold2);opacity:0;transition:.4s}
+.razon.open{background:var(--gold-soft);border-color:var(--gold)}
+.razon.open .rt{opacity:1}
+.razon .tapme{font-size:13px;color:var(--ink-faint)}
+
+/* day13 heart */
+.heart-end{text-align:center;margin-top:20px}
+.bigheart{font-size:44px;cursor:pointer;display:inline-block;animation:beat 2s ease-in-out infinite;filter:drop-shadow(0 6px 16px rgba(231,90,110,.5))}
+.bigheart:active{transform:scale(.9)}
+
+/* day14 vault */
+.vaultbox{text-align:center}
+.safe-visual{font-size:64px;margin:8px 0;filter:drop-shadow(0 10px 26px rgba(233,200,119,.35));transition:transform .5s}
+.safe-visual.open{transform:rotateY(20deg) scale(1.05)}
+.vault-note{font-family:var(--serif2);font-style:italic;color:var(--ink-dim);font-size:16px;margin-bottom:16px;line-height:1.45}
+.chips{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:14px}
+.chip{background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:99px;padding:7px 13px;font-size:13px;color:var(--gold2);cursor:pointer;font-family:var(--serif)}
+.chip.miss{color:var(--ink-faint);border-style:dashed;cursor:default}
+.vault-fail{color:var(--rose);font-family:var(--serif2);font-style:italic;font-size:17px;min-height:24px;margin-top:10px}
+
+/* boarding pass */
+.boarding{position:relative;background:linear-gradient(160deg,#141a3a,#0e1330);border:1px solid var(--gold);border-radius:22px;
+  overflow:hidden;box-shadow:0 0 0 1px rgba(233,200,119,.25), 0 20px 50px rgba(0,0,0,.5);margin:6px auto 4px;max-width:340px;
+  transform:translateY(40px);opacity:0}
+.boarding.in{animation:printup .9s cubic-bezier(.2,.9,.25,1) forwards}
+@keyframes printup{to{transform:none;opacity:1}}
+.bp-head{padding:16px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px dashed rgba(233,200,119,.4);
+  background:linear-gradient(135deg,rgba(233,200,119,.14),transparent)}
+.bp-head .logo{font-size:22px}
+.bp-head .fl{text-align:right}
+.bp-head .fl b{font-family:var(--serif);color:var(--gold2);font-size:15px;display:block}
+.bp-head .fl span{font-size:10px;color:var(--ink-dim);letter-spacing:1px}
+.bp-body{padding:16px 18px}
+.bp-row{display:flex;gap:14px;margin-bottom:13px}
+.bp-cell{flex:1}
+.bp-cell .k{font-size:9px;letter-spacing:1.4px;color:var(--gold-deep);text-transform:uppercase}
+.bp-cell .v{font-family:var(--serif);font-size:15px;color:var(--ink);margin-top:2px}
+.bp-itin{border-top:1px dashed rgba(233,200,119,.3);padding-top:12px;margin-top:4px}
+.bp-itin .k{font-size:9px;letter-spacing:1.4px;color:var(--gold-deep);text-transform:uppercase;margin-bottom:6px}
+.bp-itin p{font-size:13px;line-height:1.55;color:#e7dcc8}
+.bp-bag{margin-top:12px;background:var(--gold-soft);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:12.5px;color:#f0e2c9;line-height:1.45}
+.bp-foot{padding:12px 18px 18px;border-top:1.5px dashed rgba(233,200,119,.4);position:relative}
+.barcode{height:40px;background-image:repeating-linear-gradient(90deg,var(--gold2) 0 2px,transparent 2px 4px,var(--gold2) 4px 5px,transparent 5px 9px,var(--gold2) 9px 12px,transparent 12px 14px);opacity:.85;border-radius:3px}
+.bp-stamp{position:absolute;right:14px;top:-6px;transform:rotate(-12deg);border:2px solid var(--gold);color:var(--gold2);font-size:9.5px;font-weight:800;letter-spacing:.5px;
+  padding:5px 8px;border-radius:8px;text-align:center;background:rgba(10,8,20,.5);line-height:1.2;max-width:120px}
+.bp-notch{position:absolute;width:22px;height:22px;border-radius:50%;background:var(--bg1);top:calc(50% - 11px)}
+.bp-notch.l{left:-11px}.bp-notch.r{right:-11px}
+
+.reveal-step{margin-bottom:22px}
+.step-title{font-family:var(--serif2);font-style:italic;text-align:center;color:var(--gold2);font-size:19px;margin-bottom:12px}
+.finalline{font-family:var(--serif);font-size:20px;text-align:center;color:#f2e7d4;line-height:1.5;padding:10px 6px 4px}
+.finalline .sig{color:var(--gold2)}
+
+.footer-note{text-align:center;color:var(--ink-faint);font-size:12px;margin-top:30px;font-family:var(--serif2);font-style:italic}
+.debug-badge{position:fixed;bottom:8px;right:8px;z-index:90;background:rgba(233,90,110,.85);color:#fff;font-size:10px;font-weight:700;padding:4px 9px;border-radius:99px;letter-spacing:.5px}
+</style>
+
+<div id="particles"></div>
+
+<!-- LOCK -->
+<div id="lock">
+  <div class="seal">💌</div>
+  <h1>Mientras No Estoy</h1>
+  <div class="sub">Este calendario es solo para Vicky 💌</div>
+  <div class="q">¿Cuál fue la primera playa a la que fuimos con tu familia?</div>
+  <div class="field">
+    <input class="txt" id="lockInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="escribe aquí, princess...">
+    <button class="btn" id="lockBtn">entrar 💛</button>
+    <div class="lockmsg" id="lockMsg"></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div class="wrap hidden" id="home">
+  <div class="topbar">
+    <div class="row">
+      <div class="brand"><span id="brandCake" class="cake hidden">🎂</span> Mientras No Estoy</div>
+      <div class="daychip" id="dayChip">Día — de 14</div>
+    </div>
+    <div class="countbar">
+      <div class="progress"><i id="progFill"></i></div>
+      <div class="cd" id="reunionCd">…</div>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h2>Hola <span class="u">Vicky</span> 💛</h2>
+    <p id="heroSub">cada día que no estoy, algo nuevo para ti</p>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="section" id="diarioSec">
+    <h3>🗝️ Diario de Pistas</h3>
+    <div class="hint">Las 13 palabras de la clave. Búscalas en cada día — al final las necesitas TODAS.</div>
+    <div class="diario" id="diario"></div>
+  </div>
+
+  <div class="section">
+    <h3>🧩 Rompecabezas</h3>
+    <div class="hint">Cada día completado revela una pieza. ¿Adivinas qué foto es? 😏</div>
+    <div class="puzzle-wrap"><div class="puzzle" id="homePuzzle"></div></div>
+    <div class="pcount" id="homePcount">0 / 14 piezas</div>
+  </div>
+
+  <div class="footer-note">hecho con demasiado amor, desde boston · para mi princess 💛</div>
+</div>
+
+<!-- DAY VIEW -->
+<div id="day"><div class="dwrap" id="dwrap"></div></div>
+
+<!-- FX -->
+<canvas id="confetti"></canvas>
+
+<script>
+"use strict";
+/* ===================== CONFIG ===================== */
+var DEBUG = /[?&]debug=1/.test(location.search);
+var WA = "50766818669";
+var HER = "Vicky", ME = "Tommy";
+
+/* Panama = UTC-5. Day 1 = 2026-07-06 00:00 Panamá = 05:00 UTC. */
+function unlockMs(n){ return Date.UTC(2026,6,5+n,5,0,0); }        // n=1..14
+function reunionMs(){ return unlockMs(14); }
+function isUnlocked(n){ return DEBUG || Date.now() >= unlockMs(n); }
+function realDay(){ var d=0; for(var n=1;n<=14;n++){ if(Date.now()>=unlockMs(n)) d=n; } return d; } // 0 = before day1
+
+/* words of the vault phrase */
+var WORD = {1:"Hola",2:"Tommy",3:"Te",4:"Amo",5:"Mucho",6:"Quiero",7:"Que",8:"Me",9:"Muerdas",10:"Y",11:"Me",12:"Hagas",13:"Cosquillas"};
+var PHRASE = "Hola Tommy Te Amo Mucho Quiero Que Me Muerdas Y Me Hagas Cosquillas";
+var METHOD = {1:"given",2:"hidden",3:"given",4:"earned",5:"earned",6:"hidden",7:"given",8:"earned",9:"hidden",10:"hidden",11:"earned",12:"given",13:"hidden"};
+var HIDDEN_HINT = {
+  2:"👀 psst... toca la foto 3 veces",
+  6:"👀 psst... voltea el vale",
+  9:"👀 psst... mantén presionada la foto",
+  10:"👀 psst... sigue raspando la esquina de abajo",
+  13:"👀 psst... toca el corazón al final de la carta"
+};
+var GIFT = {
+  3:"tu regalo existe. se está haciendo ahorita mismo, especial para ti. más no te digo jajaja",
+  7:"actualización: tu regalo va en camino. sigue sin ser lo que crees 😌",
+  10:"pista chiquita porque me caes bien: son DOS cosas. ya. no preguntes más payasa",
+  13:"mañana. eso es todo lo que te voy a decir. mañana 👀"
+};
+/* completing day D reveals this puzzle tile index (0..13) in a 2x7 grid */
+var TILE_FOR_DAY = {1:3,2:8,3:0,4:11,5:5,6:13,7:1,8:9,9:6,10:12,11:2,12:10,13:4,14:7};
+
+var OPENING = {
+  1:"día 1 de 14. bienvenida a tu calendario princess. esto va a estar bueno 😏",
+  2:"día 2. dormiste bien goofy? hoy hay una foto que te va a gustar",
+  3:"DÍA 3. HOY ES TU DÍAAAA 🎂",
+  4:"día 4. hoy venimos a competir. prepárate para perder payasa",
+  5:"día 5. hoy vamos a ver si de verdad me conoces 🤨",
+  6:"día 6. hoy hay premio... y algo escondido 👀",
+  7:"día 7. LA MITAD goofy. ya casi",
+  8:"día 8. hoy toca atrapar cosas. ojalá fueras así de rápida conmigo jajaja",
+  9:"día 9. hoy nos ponemos un poquito serios... pero bonito",
+  10:"día 10. hoy se raspa. literal",
+  11:"día 11. quiz round 2. a ver si aprendiste algo payasa",
+  12:"día 12. hoy me puse romántico. disfrútalo que no pasa siempre jajaja",
+  13:"día 13. MAÑANA TE VEO. lee esto con calma 🥹",
+  14:"día 14. llegó el día. abre la bóveda... si puedes 🔐"
+};
+var PREGUNTA = {
+  1:"qué es lo primero que quieres hacer cuando llegue? 👀",
+  2:"cuál ha sido tu momento favorito de nosotros hasta ahora?",
+  3:"qué deseo pediste con las velitas? (si no se puede decir, inventa otro jajaja)",
+  4:"qué canción te recuerda a mí? mándamela",
+  5:"qué es lo que MÁS extrañas de mí? (ya sé la respuesta pero dímelo)",
+  6:"qué quieres comer conmigo apenas yo llegue?",
+  7:"si te pudieras teletransportar a boston 5 minutos, qué haríamos?",
+  8:"cuál es tu foto favorita de nosotros y por qué?",
+  9:"qué momento de israel repetirías conmigo?",
+  10:"a dónde quieres que vayamos en el bote la próxima?",
+  11:"qué es lo más goofy que yo he hecho según tú?",
+  12:"plan ideal para nuestro primer finde juntos otra vez?",
+  13:"qué es lo PRIMERO que me vas a decir mañana cuando me veas?"
+};
+var TITLE = {1:"Carta 💌",2:"La Foto 📸",3:"¡Feliz Cumple! 🎂",4:"La Batalla del Yo Más 🥊",5:"¿Me conoces? 🧠",6:"Vale + Canción 🎟️",7:"Mitad del Viaje 💌",8:"Atrapa-Corazones 💘",9:"Israel 📸",10:"Rasca y Gana 🔮",11:"¿Qué diría Tommy? 🧠",12:"Vale Dorado 👑",13:"La Carta 💌",14:"La Bóveda 🔐"};
+
+/* letters */
+var L_DAY1 =
+"Princesita goofy;\n\n"+
+"Si estás leyendo esto es porque pudiste entrar. Obvio, eres mi princess inteligente jajaja, yo sé que me extrañas demasiado. Tmb sé que darías lo que fuera por estar aquí conmigo ahorita. yo también, mi reina. Dejarte en tu casa ayer fue de las cosas que mas me dolieron y cuando te pusiste a llorar de cute con las cartas casi lloro yo, pero soy hombree. Como no me pude quedar, hice esto. cada día que yo no esté, tú vas a tener algo nuevo aquí. algo diferente todos los días. Cartas, juegos, cosas escondidas y un secreto cool al final que no te voy a decir ni que es. Quiero que cada mañana te despiertes y lo primero que pienses sea 'qué me dejó tommy hoy'. porque aunque esté en boston, estoy contigo todos los días. literal. Eres mi princesa all the way. te amo mi reina.\n\n"+
+"— tommy\n\n"+
+"Btw: sí, hay cosas escondidas en los días. sí, tienes que encontrarlas. no, no te voy a ayudar jajaja";
+
+var L_DAY3 =
+"FELIZ CUMPLEAÑOS MI REINAAAA 🎂🎉\n\n"+
+"17. Este cumpleaños es diferente a todos los que has tenido, porque es el primero en el que eres MI novia. el primero de nosotros weeeeeeee. Sí, también es el primero que me pierdo... y créeme que me duele más a mí que a ti. yo tendría que estar ahí ahorita mordiéndote y haciéndote pasar pena con todo el mundo. pero bueno, boston me robó jajaja Yo quiero pedir para tu cumple de regalo que este año te vaya bien en TODO. que cada problema que tengas se te solucione uno por uno. que sea tu mejor año. Tú te mereces el mundo, goofy. y mientras yo pueda, te lo voy a dar.\n\n"+
+"disfruta tu día, payasa hermosa. te amo mi vida. feliz cumpleaños\n\n"+
+"— Tu bebe\n\n"+
+"Btw: tu regalo de verdad... existe. sigue leyendo abajo";
+
+var L_DAY7 =
+"goofy YA VAMOS POR LA MITAD. 7 días. lo más duro ya pasó princesa. no te voy a mentir, boston está cool pero yo ando pensando en ti full. veo cualquier cosa y digo 'a vicky le gustaría esto'. dark que extrañarte se volvió mi hobby jajaja. pero mira el lado bueno: ya faltan menos días de los que pasaron. cada día que abres esto estamos más cerca. y cuando llegue prepárate porque te voy a morder por los 14 días acumulados 😤 aguanta un poquito más mi reina. ya casi. te amo princesssss — Tu bebe";
+
+var L_DAY13 =
+"Princesita goofy;\n\n"+
+"MAÑANA. MAÑANAAAA. se acabó esto de extrañarte por pantalla payasa. estos 14 días me confirmaron algo que ya sabía: no me gusta la vida sin ti cerca. o sea sí funciono, respiro y todo... pero no es lo mismo jajaja. tú eres mi paz y mi caos favorito al mismo tiempo. gracias por abrir esto todos los días, por jugar mis juegos, por buscar las palabritas escondidas, por aguantarme hasta desde otro país. eso es ser mi princess all the way. mañana cuando te vea no te suelto. aviso desde ya. prepárate física y mentalmente porque vienen 14 días de mordidas y cosquillas ACUMULADAS, con intereses 😤 y btw... ya tienes las 13 palabras? mañana las necesitas TODAS 🔐 te amo mi reina. nos vemos MAÑANA.\n\n"+
+"— Tu bebe";
+
+var TXT_DAY2 =
+"Te acuerdas de esta foto? en tu favorito lugar playa escondida... la primera vez que fui a la playa con tu familia. Yo por fuera estaba normal pero por dentro estaba pendiente de todo jajaja... caminando contigo de la mano ahí, con tus papás atrás. Dark que ellos tomaron esta foto.\n\n"+
+"Esta foto es de mis favoritas contigo. ni estamos posando, ni sabíamos que existía. solo somos tú y yo caminando. así de simple. así de nosotros.\n\n"+
+"guárdala bien... esta foto va a volver a aparecer antes de que termine este calendario. no te digo cómo pero si te digo que saldra al final, te amo princesssss";
+
+var TXT_DAY9 =
+"Esta es de israel, del garin. Ese viaje no fue solo bonito, fue difícil también y tú lo sabes. Pasamos momentos que no le contamos a nadie y momentos que no cambio por NADA. Eso fue lo que israel me enseñó de nosotros: que podemos con lo que sea. Lo bonito y lo duro. Mientras nos tengamos tú y yo, podemos no importa qué pase. Por eso cuando pienso en ese viaje no pienso en los lugares, pienso en que volvimos más fuertes. Tú y yo goofy. Siempre. te amo princesssss";
+
+var BATTLE = ["YO MASSSS","TE ADOROOO","ERES MI FAVORITA","I LOVE YOUUUUUUUUUU","GOOFY ERES MI TODOOO","ERES MI TODO PAYASA","YA YO GANO O T MUERDO 😤","MIRA MIRA YO GANOOOOO"];
+var BATTLE_WIN = "ok ok... tú ganas payasa... 🏳️ ......MENTIRA. YO MÁS POR SIEMPRE Y NO SE DISCUTE 👑";
+
+var QUIZ5 = {
+  q:[
+    {t:"¿Cuál es mi forma favorita de molestarte?", o:["Esconderte el celular","Comerme tu comida","COSQUILLAS","Mandarte fotos feas tuyas"], c:2},
+    {t:"¿Cuál es mi actividad favorita?", o:["Pescar","NAP TIME","Ver Porsches por 3 horas","El gym (jajaja no)"], c:1},
+    {t:"¿Quién es la persona que más nos molesta?", o:["Tu mamá","TAMAR ESKENAZI","El que nos ve raro en el cine","Mi celular con las notificaciones"], c:1},
+    {t:"¿Quién ama más al otro?", o:["Vicky","Empate","OBVIAMENTE TOMMY","Imposible de medir científicamente"], c:2},
+    {t:"¿Cuánto me amas?", o:["Mucho","Muchísimo","Demasiado","Infinito"], c:-1, all:"CORRECTO. todas eran correctas payasa, esta era gratis porque te amo 😌"}
+  ],
+  pass:4,
+  fails:["PAYASA CÓMO VAS A FALLAR ESO 😭","goofy... en serio?? devuélveme mis mensajitos","por esa te voy a morder DOBLE cuando llegue","intenta de nuevo que esto es vergonzoso jajaja"],
+  bonus:"VALE POR UN NAP TIME JUNTOS, YO PONGO EL BRAZO 😴"
+};
+var QUIZ11 = {
+  q:[
+    {t:"Vicky manda foto de su outfit antes de salir. ¿Qué dice Tommy?", o:["'Está lindo'","'Cámbiate el zapato'","'WAO ERES HERMOSAAAAA TIPO PARESCO UN MAKE A WISH'","Visto ✔️✔️"], c:2},
+    {t:"Se queda dormida hablando por teléfono. Tommy:", o:["Se ofende y cuelga","'GOOFY DESCANSA TE AMO'","Le sube el volumen a ver si despierta","Le manda 47 mensajes"], c:1},
+    {t:"Vicky le dice que está triste. Tommy:", o:["'F'","'Uy qué mal'","'Te amo y estoy ahí para ti siempre, para solucionarlo contigo juntos'","Le manda un meme y ya"], c:2},
+    {t:"Vicky le pone 'jajaja' a algo que NO era chiste. Tommy:", o:["'?'","'Ok'","'¿Y el chiste goofy? ah ya... eres túuuu'","Se ríe también por compromiso"], c:2},
+    {t:"Discusión y ella tiene la razón. Tommy:", o:["Nunca pasa","Cambia de tema","'Ya, tienes la razón para que no me pegues... mentira, eres mujer...'","'Tienes razón' (sin drama) — jajaja no"], c:2},
+    {t:"Vicky pide que le compre comida. Tommy:", o:["'Yo también tengo hambre'","'Con tu plata'","'Hmm siempreee... mentira te amo y con gustooo'","La deja en visto estratégicamente"], c:2}
+  ],
+  pass:5,
+  fails:["PAYASA tú deberías saber cómo hablo yo 😭 intenta de nuevo"]
+};
+
+var VALE6_FRONT = [
+  "VALE OFICIAL DE TOMMY™",
+  "Vale por: <b>UNA SESIÓN DE COSQUILLAS SIN DERECHO A QUEJARSE</b> 🫵",
+  "Condiciones: no hay escape, no hay tiempo límite, no se aceptan 'ya ya ya'",
+  "Canjeable: cuando yo llegue, donde yo quiera, cuando menos te lo esperes",
+  "Firma: <b>tu bebe</b> · NO REEMBOLSABLE"
+];
+var MISSION6 = "🎵 <b>MISIÓN:</b> dale play a NUESTRA canción, escúchala COMPLETA pensando en mí, y dime en qué segundo casi lloras. no hagas trampa de adelantarla payasa";
+var SONG_DONE = "la escuchaste enterita 🥹 ahora dime el segundo →";
+
+var CATCH_PHRASE = "CADA DÍA QUE PASA TE EXTRAÑO MÁS PERO CADA DÍA QUE PASA FALTA MENOS PARA MORDERTE";
+
+var SCRATCH10 = {
+  title:"TABOGA ROUND 2 🚤",
+  body:"Tú, yo, el bote, el mar. Como aquel día. Pero esta vez con 14 días de abrazos atrasados que cobrar. Ve escogiendo el traje de baño goofy 😌 ...o si tienes una idea mejor, dímela y yo digo que sí"
+};
+
+var VALE12 = "VALE DORADO 👑 — Vale por: UN DÍA ENTERO DONDE TÚ DECIDES TODO. a dónde vamos, qué comemos, qué vemos. yo solo manejo, te miro y te digo que estás hermosa. porque un día contigo eligiendo todo sigue siendo mi plan favorito. Canjeable: cualquier día después del 19 de julio. Firma: tu bebe que te adora";
+var RAZONES12 = [
+  "extraño molestarte y que me digas YAAA TOMMY",
+  "extraño tus mensajitos y tus fotos random que amo",
+  "extraño los nap times contigo",
+  "extraño morderte. obviamente.",
+  "extraño hasta cuando me pegas jajaja"
+];
+
+/* ===================== STATE ===================== */
+var SKEY = "mne-v1";
+var S = load();
+function load(){
+  try{ var o=JSON.parse(localStorage.getItem(SKEY)); if(o&&typeof o==="object") return fix(o); }catch(e){}
+  return fix({});
+}
+function fix(o){
+  o.unlocked = !!o.unlocked;
+  o.opened = o.opened||{}; o.completed = o.completed||{}; o.words = o.words||{};
+  o.extra = o.extra||{}; o.answers = o.answers||{}; o.quiz = o.quiz||{};
+  o.birthday = !!o.birthday; o.bonusVale = !!o.bonusVale;
+  return o;
+}
+function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
+
+/* ===================== HELPERS ===================== */
+function $(s,r){ return (r||document).querySelector(s); }
+function $$(s,r){ return Array.prototype.slice.call((r||document).querySelectorAll(s)); }
+function el(html){ var t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstElementChild; }
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function norm(s){ return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim(); }
+function wa(text){ return "https://wa.me/"+WA+"?text="+encodeURIComponent(text); }
+function pad(n){ return (n<10?"0":"")+n; }
+
+function extraLabel(v){
+  if(v<=12) return "meh 😐";
+  if(v<=30) return "un poquito 🙂";
+  if(v<=55) return "bastante 🥺";
+  if(v<=80) return "muchísimo 😔";
+  if(v<=99) return "te extraño demasiado 😩";
+  return "NO PUEDO VIVIR ASÍ 😭";
+}
+
+/* particles */
+(function(){
+  var box=$("#particles"), n = (window.innerWidth<420?22:32);
+  for(var i=0;i<n;i++){
+    var p=document.createElement("div"); p.className="pt";
+    var sz=2+Math.random()*4;
+    p.style.width=sz+"px"; p.style.height=sz+"px";
+    p.style.left=(Math.random()*100)+"%";
+    var dur=13+Math.random()*16;
+    p.style.animationDuration=dur+"s";
+    p.style.animationDelay=(-Math.random()*dur)+"s";
+    p.style.setProperty("--drift",(Math.random()*60-30)+"px");
+    box.appendChild(p);
+  }
+})();
+
+/* confetti */
+var _cf=null;
+function confetti(count, gold){
+  var cv=$("#confetti"), ctx=cv.getContext("2d");
+  cv.width=innerWidth; cv.height=innerHeight;
+  var cols = gold ? ["#e9c877","#f4dd9a","#c79b45","#fff2c4","#e79aa8"] : ["#e9c877","#f4dd9a","#e79aa8","#fff","#c79b45"];
+  var parts=[]; count=count||120;
+  for(var i=0;i<count;i++){
+    parts.push({x:Math.random()*cv.width,y:-20-Math.random()*cv.height*0.4,
+      w:5+Math.random()*7,h:8+Math.random()*8,
+      vx:(Math.random()-.5)*2.4,vy:2+Math.random()*3.4,rot:Math.random()*6.3,vr:(Math.random()-.5)*.34,
+      col:cols[(Math.random()*cols.length)|0],life:0});
+  }
+  if(_cf) cancelAnimationFrame(_cf);
+  var t0=performance.now();
+  function fr(now){
+    ctx.clearRect(0,0,cv.width,cv.height);
+    var alive=false, el2=(now-t0);
+    for(var i=0;i<parts.length;i++){
+      var p=parts[i]; p.x+=p.vx; p.y+=p.vy; p.vy+=0.045; p.rot+=p.vr;
+      if(p.y<cv.height+30) alive=true;
+      var a = el2>2600 ? Math.max(0,1-(el2-2600)/900) : 1;
+      ctx.save(); ctx.globalAlpha=a; ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+      ctx.fillStyle=p.col; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+    }
+    if(alive && el2<3600){ _cf=requestAnimationFrame(fr); } else { ctx.clearRect(0,0,cv.width,cv.height); _cf=null; }
+  }
+  _cf=requestAnimationFrame(fr);
+}
+
+/* heart burst */
+function heartBurst(x,y,n){
+  n=n||16;
+  for(var i=0;i<n;i++){
+    (function(i){
+      var h=document.createElement("div"); h.className="heartfx"; h.textContent = (Math.random()<.5?"❤️":"💛");
+      h.style.left=x+"px"; h.style.top=y+"px";
+      document.body.appendChild(h);
+      var ang=Math.random()*Math.PI*2, dist=60+Math.random()*130;
+      var dx=Math.cos(ang)*dist, dy=Math.sin(ang)*dist-60;
+      h.animate([{transform:"translate(0,0) scale(.4)",opacity:1},
+        {transform:"translate("+dx+"px,"+dy+"px) scale("+(1+Math.random())+")",opacity:0}],
+        {duration:1000+Math.random()*700,easing:"cubic-bezier(.2,.8,.3,1)"});
+      setTimeout(function(){ h.remove(); },1800);
+    })(i);
+  }
+}
+
+/* key pop overlay (given/earned words) */
+function keyPop(word){
+  var o=el('<div class="keypop"><div class="kc"><div class="ky">🗝️</div><div class="kt">Palabra del día conseguida</div><div class="kw">'+esc(word)+'</div><div class="tapaway">toca para continuar</div></div></div>');
+  document.body.appendChild(o);
+  requestAnimationFrame(function(){ o.classList.add("on"); });
+  confetti(70,true);
+  function close(){ o.classList.remove("on"); setTimeout(function(){ o.remove(); },350); }
+  o.addEventListener("click",close);
+  setTimeout(close,3200);
+}
+
+/* ===================== WORD / COMPLETE ===================== */
+function awardWord(day, opts){
+  opts=opts||{};
+  var already = !!S.words[day];
+  if(!S.words[day]){ S.words[day]=WORD[day]; save(); renderDiario(); refreshHomeDynamic(); }
+  if(!already && !opts.silent){
+    if(METHOD[day]==="hidden"){ /* gentle inline handled by caller; still small burst */ }
+    else keyPop(WORD[day]);
+  }
+}
+function completeDay(day){
+  if(!S.completed[day]){ S.completed[day]=true; save(); refreshPuzzle(); refreshHomeDynamic(); }
+}
+function markOpened(day){ if(!S.opened[day]){ S.opened[day]=true; save(); } }
+
+/* ===================== LOCK ===================== */
+var WRONG = ["mmm no. tú sabes esto goofy","PAYASA piensa bien","en serio? intenta de nuevo 😭"];
+var wrongI=0;
+function initLock(){
+  var inp=$("#lockInput"), btn=$("#lockBtn"), msg=$("#lockMsg");
+  function tryOpen(){
+    var v=inp.value||"";
+    if(norm(v).indexOf("escondida")>=0){
+      S.unlocked=true; save();
+      var r=btn.getBoundingClientRect();
+      heartBurst(r.left+r.width/2, r.top, 22);
+      confetti(60,false);
+      setTimeout(function(){ $("#lock").style.transition="opacity .5s, transform .5s"; $("#lock").style.opacity="0"; $("#lock").style.transform="scale(1.05)"; },220);
+      setTimeout(function(){ $("#lock").classList.add("hidden"); showHome(); },720);
+    } else {
+      msg.textContent = WRONG[wrongI%WRONG.length]; wrongI++;
+      $("#lock .field").classList.remove("shake"); void $("#lock .field").offsetWidth; $("#lock .field").classList.add("shake");
+    }
+  }
+  btn.addEventListener("click",tryOpen);
+  inp.addEventListener("keydown",function(e){ if(e.key==="Enter") tryOpen(); });
+}
+
+/* ===================== HOME ===================== */
+function showHome(){
+  $("#home").classList.remove("hidden");
+  buildGrid(); renderDiario(); buildHomePuzzle(); refreshHomeDynamic();
+  if(S.birthday) $("#brandCake").classList.remove("hidden");
+  startClocks();
+}
+
+function fmtReunion(){
+  var diff = reunionMs()-Date.now();
+  if(diff<=0) return "🥹 ¡HOY NOS VEMOS!";
+  var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000);
+  return "Nos vemos en "+d+(d===1?" día, ":" días, ")+h+(h===1?" hora":" horas");
+}
+function fmtBoxCd(n){
+  var diff = unlockMs(n)-Date.now();
+  if(diff<=0) return "";
+  var d=Math.floor(diff/86400000), h=Math.floor((diff%86400000)/3600000), m=Math.floor((diff%3600000)/60000);
+  if(d>0) return "en "+d+"d "+h+"h";
+  if(h>0) return "en "+h+"h "+m+"m";
+  return "en "+m+"m";
+}
+var _clk=null;
+function startClocks(){
+  function tick(){
+    $("#reunionCd").textContent = fmtReunion();
+    var rd=realDay(); var shown=Math.max(1,Math.min(14,rd||1));
+    $("#dayChip").textContent = "Día "+shown+" de 14";
+    $("#progFill").style.width = (Math.max(0,Math.min(14,rd))/14*100)+"%";
+    $$("#grid .box.locked .mini").forEach(function(m){
+      var n=+m.getAttribute("data-cd"); if(n) m.textContent=fmtBoxCd(n);
+    });
+  }
+  tick(); if(_clk) clearInterval(_clk); _clk=setInterval(tick,1000*20);
+  // faster first-minute refresh for countdown feel
+  var fast=setInterval(tick,1000); setTimeout(function(){clearInterval(fast);},60000);
+}
+
+var TEASERS=["todavía no 😌","la paciencia es una virtud princess","ni lo intentes, te conozco payasa"];
+var teaseI=0, _teaseT=null;
+function showTeaser(txt){
+  var t=$("#teaser"); if(!t){ t=el('<div class="teaser" id="teaser"></div>'); document.body.appendChild(t); }
+  t.textContent=txt; t.classList.add("show");
+  if(_teaseT) clearTimeout(_teaseT);
+  _teaseT=setTimeout(function(){ t.classList.remove("show"); },1900);
+}
+
+function buildGrid(){
+  var g=$("#grid"); g.innerHTML="";
+  var rd=realDay();
+  for(var n=1;n<=13;n++){
+    (function(n){
+      var unlocked=isUnlocked(n), today=(n===rd);
+      var b=el('<div class="box"></div>');
+      if(!unlocked){
+        b.className="box locked";
+        b.innerHTML='<div class="ic">🔒</div><div class="num">'+n+'</div><div class="mini" data-cd="'+n+'">'+fmtBoxCd(n)+'</div>';
+        b.addEventListener("click",function(){
+          b.classList.remove("wobble"); void b.offsetWidth; b.classList.add("wobble");
+          showTeaser(TEASERS[teaseI%TEASERS.length]); teaseI++;
+        });
+      } else {
+        if(S.completed[n]) b.classList.add("done");
+        if(today) b.classList.add("today");
+        b.innerHTML=(today?'<div class="ribbon">¡NUEVO!</div>':'')+'<div class="num">'+n+'</div><div class="lab">día</div>';
+        b.addEventListener("click",function(){ openDay(n); });
+      }
+      g.appendChild(b);
+    })(n);
+  }
+  // Day 14 vault
+  var unlocked14=isUnlocked(14);
+  var v=el('<div class="box vault"><div class="safe">'+(unlocked14?'🔓':'🔐')+'</div><div class="vt"><b>Día 14 · La Bóveda</b><span>'+(unlocked14?'la clave está lista. ¿tienes las 13 palabras? 🗝️':'Este día no se abre con paciencia. Se abre con una CLAVE. Las pistas están escondidas en los otros 13 días 🔐')+'</span></div></div>');
+  v.addEventListener("click",function(){
+    if(unlocked14) openDay(14);
+    else { v.classList.remove("wobble"); void v.offsetWidth; v.classList.add("wobble"); showTeaser("hasta el 19 de julio no se abre 🔐"); }
+  });
+  g.appendChild(v);
+}
+
+function renderDiario(){
+  var d=$("#diario"); if(!d) return; d.innerHTML="";
+  for(var n=1;n<=13;n++){
+    var got=!!S.words[n];
+    var c=el('<div class="wchip'+(got?' got':'')+'">'+
+      (got?'<div class="w">'+esc(S.words[n])+'</div>':'<div class="blank">_____</div>')+
+      '<div class="dd">día '+n+'</div></div>');
+    d.appendChild(c);
+  }
+}
+
+function buildHomePuzzle(){ renderPuzzleInto($("#homePuzzle")); refreshPuzzle(); }
+function renderPuzzleInto(container){
+  if(!container) return;
+  container.style.setProperty("--pz","url('photos/rompecabezas.jpg')");
+  container.innerHTML="";
+  for(var i=0;i<14;i++){
+    var r=Math.floor(i/2), c=i%2;
+    var t=el('<div class="ptile"></div>');
+    t.style.backgroundPosition=(c*100)+"% "+((r/6)*100)+"%";
+    t.setAttribute("data-i",i);
+    container.appendChild(t);
+  }
+  applyPuzzle(container);
+}
+function applyPuzzle(container){
+  var revealed={};
+  for(var day=1;day<=14;day++){ if(S.completed[day]) revealed[TILE_FOR_DAY[day]]=true; }
+  $$(".ptile",container).forEach(function(t){
+    var i=+t.getAttribute("data-i");
+    if(revealed[i]) t.classList.remove("cov"); else t.classList.add("cov");
+  });
+}
+function refreshPuzzle(){
+  $$(".puzzle").forEach(function(p){ applyPuzzle(p); });
+  var cnt=0; for(var day=1;day<=14;day++){ if(S.completed[day]) cnt++; }
+  var pc=$("#homePcount"); if(pc) pc.textContent=cnt+" / 14 piezas"+(cnt===14?" · completo 💛":"");
+}
+function refreshHomeDynamic(){
+  if($("#grid")) buildGrid();
+  refreshPuzzle();
+  if(S.birthday){ var bc=$("#brandCake"); if(bc) bc.classList.remove("hidden"); }
+}
+
+/* ===================== DAY VIEW ===================== */
+function openDay(n){
+  markOpened(n);
+  var w=$("#dwrap"); w.innerHTML="";
+  var head=el('<div class="dtop"><button class="back">← volver</button><div class="dtag">Día '+n+' de 14</div></div>');
+  head.querySelector(".back").addEventListener("click",closeDay);
+  w.appendChild(head);
+  w.appendChild(el('<div class="dtitle">'+esc(TITLE[n])+'</div>'));
+  w.appendChild(el('<div class="opening">'+esc(OPENING[n])+'</div>'));
+  var act=el('<div class="activity"></div>'); w.appendChild(act);
+
+  RENDER[n](act, n);
+
+  var d=$("#day"); d.scrollTop=0; d.classList.remove("hidden");
+  requestAnimationFrame(function(){ d.classList.add("on"); });
+}
+function closeDay(){
+  var d=$("#day"); d.classList.remove("on");
+  setTimeout(function(){ d.classList.add("hidden"); refreshHomeDynamic(); },320);
+}
+
+/* rituals appended to activity (days 1-13) */
+function addRituals(container, n){
+  var box=el('<div class="ritual"></div>');
+  // extrañómetro
+  box.appendChild(el('<div class="rlabel">📉 Extrañómetro del día</div>'));
+  var saved = (S.extra[n]!=null)? S.extra[n] : 60;
+  var ex=el(
+    '<div><div class="extra-lab" id="exLab_'+n+'"></div>'+
+    '<input type="range" min="0" max="100" value="'+saved+'" id="exR_'+n+'">'+
+    '<div class="extra-ends"><span>meh</span><span>NO PUEDO VIVIR ASÍ</span></div></div>');
+  box.appendChild(ex);
+  // pregunta
+  box.appendChild(el('<div class="rlabel" style="margin-top:22px">💭 Pregunta del día</div>'));
+  box.appendChild(el('<div class="qday">'+esc(PREGUNTA[n])+'</div>'));
+  var ans=el('<textarea class="txt" id="ans_'+n+'" rows="2" placeholder="escríbeme aquí, goofy..."></textarea>');
+  if(S.answers[n]) ans.value=S.answers[n];
+  box.appendChild(ans);
+  var waBtn=el('<a class="btn wa" style="margin-top:12px" target="_blank" rel="noopener">Mándale tu respuesta a Tommy 💬</a>');
+  box.appendChild(waBtn);
+  // SOS
+  var sos=el('<div class="sosbar"><a class="btn ghost small" target="_blank" rel="noopener" href="'+wa("Tommy ayúdame que no encuentro la palabra del día "+n+" 😭")+'">Pedirle ayuda a Tommy 🆘</a></div>');
+  box.appendChild(sos);
+  container.appendChild(box);
+
+  // wire extrañómetro
+  var r=$("#exR_"+n), lab=$("#exLab_"+n);
+  function upd(){ lab.textContent=extraLabel(+r.value); }
+  upd();
+  r.addEventListener("input",upd);
+  r.addEventListener("change",function(){
+    if(+r.value<=12){
+      lab.textContent="¿MEH? ¿perdón? intenta de nuevo 😤";
+      var target=58; var start=+r.value, t0=performance.now();
+      (function anim(now){ var p=Math.min(1,(now-t0)/450); r.value=Math.round(start+(target-start)*(p*p*(3-2*p)));
+        if(p<1) requestAnimationFrame(anim); else { upd(); S.extra[n]=+r.value; save(); } })(t0);
+    } else { S.extra[n]=+r.value; save(); upd(); }
+  });
+  if(S.extra[n]!=null){ /* keep */ }
+
+  // wire whatsapp answer (dynamic on click)
+  ans.addEventListener("input",function(){ S.answers[n]=ans.value; save(); });
+  waBtn.addEventListener("click",function(e){
+    var v=(ans.value||"").trim();
+    var exv=(S.extra[n]!=null?S.extra[n]:+r.value);
+    var t="Día "+n+" 💌\n\""+PREGUNTA[n]+"\"\n→ "+(v||"(sin responder aún jajaja)")+"\n\nExtrañómetro de hoy: "+extraLabel(exv)+" ("+exv+"%)";
+    waBtn.setAttribute("href", wa(t));
+  });
+}
+
+/* gift hint block */
+function giftBlock(n){
+  return el('<div class="gift"><div class="gh">🎁 PISTA DEL REGALO</div><p>'+esc(GIFT[n])+'</p></div>');
+}
+
+/* typewriter */
+function typewriter(node, text, done){
+  node.classList.add("tw-cursor");
+  var i=0, skip=false, N=text.length;
+  function step(){
+    if(skip){ node.textContent=text; node.classList.remove("tw-cursor"); if(done)done(); return; }
+    i+=Math.max(1, Math.round(N/380)); // adaptive so long letters aren't too slow
+    if(i>=N){ node.textContent=text; node.classList.remove("tw-cursor"); if(done)done(); return; }
+    node.textContent=text.slice(0,i);
+    setTimeout(step, 16);
+  }
+  step();
+  return { skip:function(){ skip=true; } };
+}
+
+/* media slot (video/audio graceful) */
+function videoSlot(src, placeholder){
+  var wrap=el('<div class="mediaslot"></div>');
+  var ph=el('<div class="slot-ph"><span class="em">🎬</span>'+esc(placeholder)+'</div>');
+  wrap.appendChild(ph);
+  var v=document.createElement("video");
+  v.setAttribute("playsinline",""); v.setAttribute("controls",""); v.setAttribute("preload","metadata");
+  v.src=src; v.style.display="none";
+  v.addEventListener("loadeddata",function(){ ph.style.display="none"; v.style.display="block"; });
+  v.addEventListener("error",function(){ v.remove(); });
+  wrap.appendChild(v);
+  return wrap;
+}
+
+/* ============ per-day renderers ============ */
+var RENDER = {};
+
+/* letter renderer factory */
+function letterDay(text, word, n){
+  return function(act){
+    var panel=el('<div class="panel"><div class="letter" id="lt"></div></div>');
+    act.appendChild(panel);
+    var lt=panel.querySelector("#lt");
+    var finished=false;
+    function finish(){ if(finished)return; finished=true; setTimeout(function(){ completeDay(n); awardWord(n); }, 500); }
+    if(S.completed[n]){ lt.textContent=text; }
+    else {
+      var tw=typewriter(lt, text, finish);
+      var sk=el('<div class="skiphint">toca la carta para leerla completa ▸</div>');
+      panel.appendChild(sk);
+      panel.addEventListener("click",function(){ tw.skip(); });
+    }
+    if(GIFT[n]) act.appendChild(giftBlock(n));
+    if(n===7) act.appendChild(chartBlock(7,"así me has extrañado esta semana 📊"));
+    addRituals(act,n);
+    if(S.completed[n] && n===7){}
+  };
+}
+RENDER[1]=letterDay(L_DAY1,"Hola",1);
+RENDER[7]=letterDay(L_DAY7,"Que",7);
+
+/* DAY 2 — photo blur + hidden word (3 taps) + text + mission */
+RENDER[2]=function(act,n){
+  var already=!!S.completed[n];
+  var frame=el('<div class="photo-frame"><img src="photos/dia2.jpg" alt="nosotros"><div class="tapc">toca para ver mejor 👆</div></div>');
+  var img=frame.querySelector("img");
+  var taps= already?3:0;
+  img.style.filter = already?"none":"blur(16px)";
+  if(already) frame.querySelector(".tapc").style.display="none";
+  act.appendChild(frame);
+  act.appendChild(el('<div class="psst">'+esc(HIDDEN_HINT[2])+'</div>'));
+  var textBlock=el('<div class="panel blocktext" style="'+(already?'':'display:none')+'">'+esc(TXT_DAY2)+'</div>');
+  var wordReveal=el('<div class="psst" style="'+(S.words[2]?'':'display:none')+';color:var(--gold2);font-size:16px">🗝️ palabra encontrada: <b>'+esc(WORD[2])+'</b></div>');
+  function reveal(){
+    taps++;
+    var b=Math.max(0,16-taps*(16/3));
+    img.style.filter="blur("+b+"px)";
+    if(taps>=3){
+      frame.querySelector(".tapc").style.display="none";
+      img.style.filter="none";
+      textBlock.style.display="";
+      if(!S.words[2]){ wordReveal.style.display=""; wordReveal.classList.add("fade-in"); heartBurst(innerWidth/2, 160, 8); }
+      awardWord(2,{silent:true}); completeDay(2);
+    }
+  }
+  if(!already) frame.addEventListener("click",reveal);
+  act.appendChild(wordReveal);
+  act.appendChild(textBlock);
+  // mission
+  var mis=el('<div class="mission"><b>📸 MISIÓN:</b> mándale a tommy una selfie AHORA MISMO, como estés, sin arreglarte</div>');
+  act.appendChild(mis);
+  act.appendChild(el('<a class="btn wa" href="'+wa("misión del día 2 cumplida 📸 (foto va aparte jajaja)")+'" target="_blank" rel="noopener">Mándale la selfie a Tommy 📸</a>'));
+  addRituals(act,n);
+};
+
+/* DAY 3 — cumpleaños: cake + confetti + letter + video + gift */
+RENDER[3]=function(act,n){
+  S.birthday=true; save();
+  var bc=$("#brandCake"); if(bc) bc.classList.remove("hidden");
+  setTimeout(function(){ confetti(150,true); },250);
+
+  var stage=el('<div class="panel cake-stage"><div class="cake" id="cake"><div class="candles" id="candles"></div><div class="icing"></div><div class="body"></div><div class="plate"></div></div><div class="cake-msg" id="cakeMsg">sopla las 17 velitas... toca cada una 🕯️</div></div>');
+  act.appendChild(stage);
+  var candles=stage.querySelector("#candles"), msg=stage.querySelector("#cakeMsg");
+  var total=17, out=0, done=(!!S.completed[n]);
+  for(var i=0;i<total;i++){
+    var c=el('<div class="candle'+(done?' out':'')+'"><div class="flame"></div></div>');
+    (function(c){
+      c.addEventListener("click",function(){
+        if(c.classList.contains("out")) return;
+        c.classList.add("out"); out++;
+        var s=document.createElement("div"); s.className="smoke"; c.appendChild(s); setTimeout(function(){s.remove();},800);
+        if(out>=total){ finishCake(); }
+        else if(out===total-1){ msg.textContent="una más... 🕯️"; }
+      });
+    })(c);
+    candles.appendChild(c);
+  }
+  if(done){ out=total; }
+  function finishCake(){
+    msg.innerHTML="pide un deseo... yo ya pedí el mío y eres tú 🤍";
+    confetti(140,true);
+    revealRest();
+  }
+  var restShown=false;
+  function revealRest(){
+    if(restShown) return; restShown=true;
+    var letter=el('<div class="panel"><div class="letter">'+esc(L_DAY3)+'</div></div>');
+    letter.classList.add("fade-in"); act.insertBefore(letter, giftAnchor);
+    var vs=videoSlot("video/cumple.mp4","tommy está preparando algo... 👀");
+    vs.classList.add("fade-in"); act.insertBefore(vs, giftAnchor);
+    setTimeout(function(){ completeDay(3); awardWord(3); }, 900);
+  }
+  var giftAnchor=document.createComment("gift"); act.appendChild(giftAnchor);
+  act.appendChild(giftBlock(3));
+  if(done){ revealRest(); }
+  addRituals(act,n);
+};
+
+/* DAY 4 — batalla del yo más */
+RENDER[4]=function(act,n){
+  var won=!!S.completed[n];
+  var b=el('<div class="battle"><div class="top"><img src="photos/tommy.jpg" alt="tommy"><div class="bubble" id="bub">YO MÁS 😤</div><div class="tommy-tag">Tommy</div></div><button class="yomas" id="yomas">YO MÁS</button></div>');
+  act.appendChild(b);
+  act.appendChild(el('<div class="psst" id="b4hint">tú dale al botón... yo tengo respuesta para todo 😏</div>'));
+  var bub=b.querySelector("#bub"), btn=b.querySelector("#yomas");
+  var i=0;
+  function showBub(txt,win){ bub.classList.remove("show"); void bub.offsetWidth; bub.textContent=txt; if(win)bub.style.fontSize="16px"; requestAnimationFrame(function(){ bub.classList.add("show"); }); }
+  if(won){ showBub(BATTLE_WIN,true); btn.classList.add("won"); btn.textContent="YO MÁS 👑"; $("#b4hint").textContent="ya gané. siempre gano. te amo 👑"; }
+  btn.addEventListener("click",function(){
+    if(i<BATTLE.length){ showBub(BATTLE[i]); i++; }
+    else {
+      showBub(BATTLE_WIN,true); btn.classList.add("won"); btn.textContent="YO MÁS 👑";
+      var r=btn.getBoundingClientRect(); heartBurst(r.left+r.width/2, r.top, 24); confetti(90,false);
+      $("#b4hint").textContent="ya gané. siempre gano. te amo 👑";
+      completeDay(4); awardWord(4);
+    }
+  });
+  addRituals(act,n);
+};
+
+/* quiz renderer */
+function quizDay(cfg, n){
+  return function(act){
+    var wrap=el('<div class="panel qcard" id="qwrap"></div>');
+    act.appendChild(wrap);
+    var idx=0, score=0, locked=false;
+    function renderQ(){
+      locked=false;
+      var q=cfg.q[idx];
+      wrap.innerHTML='<div class="qprog">pregunta '+(idx+1)+' de '+cfg.q.length+'</div><div class="qtext">'+esc(q.t)+'</div>';
+      q.o.forEach(function(opt,oi){
+        var btn=el('<button class="opt">'+esc(opt)+'</button>');
+        btn.addEventListener("click",function(){ pick(oi,btn,q); });
+        wrap.appendChild(btn);
+      });
+      wrap.appendChild(el('<div class="qfeed" id="qfeed"></div>'));
+    }
+    function pick(oi,btn,q){
+      if(locked) return; locked=true;
+      var correct = (q.c===-1) || (oi===q.c);
+      var feed=wrap.querySelector("#qfeed");
+      $$(".opt",wrap).forEach(function(b){ b.disabled=true; });
+      if(correct){
+        btn.classList.add("correct"); score++;
+        if(q.all){ feed.style.color="var(--gold2)"; feed.textContent=q.all; confetti(80,true); }
+      } else {
+        btn.classList.add("wrong");
+        if(q.c>=0) $$(".opt",wrap)[q.c].classList.add("correct");
+        feed.textContent = cfg.fails[(idx)%cfg.fails.length] || cfg.fails[0];
+      }
+      setTimeout(function(){ idx++; if(idx<cfg.q.length) renderQ(); else results(); }, correct?(q.all?1500:750):1350);
+    }
+    function results(){
+      var passed = score>=cfg.pass;
+      wrap.innerHTML='<div class="qresult"><div class="score">'+score+'/'+cfg.q.length+'</div><div class="rmsg" id="rmsg"></div></div>';
+      var rmsg=wrap.querySelector("#rmsg");
+      if(passed){
+        rmsg.textContent = "me conoces, goofy 💛";
+        if(cfg.bonus && score===cfg.q.length){
+          S.bonusVale=true; save();
+          wrap.querySelector(".qresult").appendChild(el('<div class="mission" style="margin-top:14px"><b>🎁 BONUS 5/5:</b> '+esc(cfg.bonus)+'</div>'));
+        }
+        S.quiz[n]=Math.max(S.quiz[n]||0,score); save();
+        completeDay(n); awardWord(n);
+      } else {
+        rmsg.textContent = cfg.fails[0];
+        var retry=el('<button class="btn" style="margin-top:14px">intentar de nuevo 🔁</button>');
+        retry.addEventListener("click",function(){ idx=0;score=0; renderQ(); });
+        wrap.querySelector(".qresult").appendChild(retry);
+      }
+    }
+    renderQ();
+    if(n===5){ /* nothing extra */ }
+    addRituals(act,n);
+  };
+}
+RENDER[5]=quizDay(QUIZ5,5);
+RENDER[11]=quizDay(QUIZ11,11);
+
+/* DAY 6 — flip vale + audio */
+RENDER[6]=function(act,n){
+  var flipped=!!S.words[6];
+  var front='<div class="ticket front"><div class="tt">'+VALE6_FRONT[0]+'</div><div class="tl">'+VALE6_FRONT.slice(1).map(function(x){return "· "+x;}).join("<br><br>")+'</div></div>';
+  var back='<div class="ticket back"><div class="bw">tu palabra escondida</div><div class="bword">'+esc(WORD[6])+'</div><div class="bw" style="margin-top:14px;font-size:11px">día 6 🗝️</div></div>';
+  var flip=el('<div class="flip'+(flipped?' flipped':'')+'" id="flip6"><div class="flip-inner">'+front+back+'</div></div>');
+  act.appendChild(flip);
+  act.appendChild(el('<div class="flip-hint">'+esc(HIDDEN_HINT[6])+'</div>'));
+  flip.addEventListener("click",function(){
+    flip.classList.toggle("flipped");
+    if(flip.classList.contains("flipped") && !S.words[6]){ awardWord(6,{silent:true}); completeDay(6); heartBurst(innerWidth/2,220,8); }
+  });
+  // mission + audio
+  act.appendChild(el('<div class="mission">'+MISSION6+'</div>'));
+  var ap=audioPlayer("audio/cancion.m4a", n);
+  act.appendChild(ap);
+  addRituals(act,n);
+};
+
+function audioPlayer(src, n){
+  var wrap=el('<div></div>');
+  var a=document.createElement("audio"); a.src=src; a.preload="metadata"; a.setAttribute("playsinline","");
+  var ui=el('<div class="aplayer"><button class="playbtn" id="pb">▶</button><div class="abody"><div class="anm">nuestra canción 🎵</div><div class="abar" id="abar"><i id="afill"></i></div><div class="atime"><span id="acur">0:00</span><span id="adur">0:00</span></div></div></div>');
+  var ph=el('<div class="slot-ph"><span class="em">🎵</span>tommy está subiendo la canción... 👀</div>');
+  ph.style.display="none";
+  wrap.appendChild(ui); wrap.appendChild(ph); wrap.appendChild(a);
+  var done=el('<div class="songdone" style="display:none"><div class="sd">'+esc(SONG_DONE)+'</div><a class="btn wa" target="_blank" rel="noopener" href="'+wa("misión día 6: casi lloro en el segundo ___")+'">decirle el segundo a Tommy 💬</a></div>');
+  wrap.appendChild(done);
+  var pb=ui.querySelector("#pb"), fill=ui.querySelector("#afill"), cur=ui.querySelector("#acur"), dur=ui.querySelector("#adur"), bar=ui.querySelector("#abar");
+  function fmt(t){ t=t||0; var m=Math.floor(t/60), s=Math.floor(t%60); return m+":"+pad(s); }
+  a.addEventListener("loadedmetadata",function(){ dur.textContent=fmt(a.duration); });
+  a.addEventListener("timeupdate",function(){ if(a.duration){ fill.style.width=(a.currentTime/a.duration*100)+"%"; cur.textContent=fmt(a.currentTime); } });
+  a.addEventListener("ended",function(){ pb.textContent="▶"; done.style.display="block"; done.classList.add("fade-in"); });
+  a.addEventListener("error",function(){ ui.style.display="none"; ph.style.display="block"; });
+  pb.addEventListener("click",function(){ if(a.paused){ a.play(); pb.textContent="⏸"; } else { a.pause(); pb.textContent="▶"; } });
+  bar.addEventListener("click",function(e){ if(!a.duration)return; var r=bar.getBoundingClientRect(); a.currentTime=(e.clientX-r.left)/r.width*a.duration; });
+  return wrap;
+}
+
+/* DAY 8 — catch hearts */
+RENDER[8]=function(act,n){
+  var words=CATCH_PHRASE.split(" ");
+  var won=!!S.completed[n];
+  var stage=el('<div class="panel" style="padding:12px"><div class="catch" id="catch"><div class="cc" id="cc">0/'+words.length+'</div><div class="cwords" id="cw">'+(won?esc(CATCH_PHRASE):"atrapa los corazones 💘")+'</div></div></div>');
+  act.appendChild(stage);
+  var restart=el('<button class="btn ghost small" style="margin:0 auto 8px;display:block" id="rs8">reiniciar 🔁</button>');
+  act.appendChild(restart);
+  var catchEl=stage.querySelector("#catch"), cc=stage.querySelector("#cc"), cw=stage.querySelector("#cw");
+  var idx=0, running=false, hearts=[], raf=null, lastSpawn=0;
+
+  function reset(){ hearts.forEach(function(h){h.node.remove();}); hearts=[]; idx=0; cc.textContent="0/"+words.length; cw.textContent="atrapa los corazones 💘"; start(); }
+  function spawn(){
+    var W=catchEl.clientWidth;
+    var node=el('<div class="heart">'+ (Math.random()<.5?"❤️":"💛") +'</div>');
+    var x=10+Math.random()*(W-50);
+    node.style.left=x+"px"; node.style.top="-40px";
+    var h={node:node, y:-40, x:x, sp:0.9+Math.random()*0.8};
+    node.addEventListener("click",function(){ catchHeart(h); });
+    node.addEventListener("touchstart",function(e){ e.preventDefault(); catchHeart(h); },{passive:false});
+    catchEl.appendChild(node); hearts.push(h);
+  }
+  function catchHeart(h){
+    if(h.caught) return; h.caught=true;
+    var r=h.node.getBoundingClientRect(); heartBurst(r.left+12, r.top+12, 6);
+    h.node.remove(); hearts.splice(hearts.indexOf(h),1);
+    if(idx<words.length){ idx++; cc.textContent=idx+"/"+words.length; cw.textContent=words.slice(0,idx).join(" "); }
+    if(idx>=words.length){ win(); }
+  }
+  function loop(ts){
+    if(!running) return;
+    if(ts-lastSpawn > 780 && hearts.length<5 && idx<words.length){ spawn(); lastSpawn=ts; }
+    var H=catchEl.clientHeight;
+    for(var i=hearts.length-1;i>=0;i--){ var h=hearts[i]; h.y+=h.sp; h.node.style.top=h.y+"px";
+      if(h.y>H+30){ h.node.remove(); hearts.splice(i,1); } }
+    raf=requestAnimationFrame(loop);
+  }
+  function start(){ if(running)return; running=true; lastSpawn=0; raf=requestAnimationFrame(loop); }
+  function stop(){ running=false; if(raf) cancelAnimationFrame(raf); }
+  function win(){
+    stop(); cw.textContent=CATCH_PHRASE; cc.textContent=words.length+"/"+words.length+" 💛";
+    confetti(90,false);
+    completeDay(8); awardWord(8);
+  }
+  restart.addEventListener("click",reset);
+  if(!won){ start(); } else { cc.textContent=words.length+"/"+words.length+" 💛"; }
+  // stop when day closes
+  $("#day").addEventListener("scroll",function(){},{passive:true});
+  act._cleanup=stop;
+  addRituals(act,n);
+};
+
+/* DAY 9 — israel photo, long-press word */
+RENDER[9]=function(act,n){
+  var frame=el('<div class="photo-frame"><img src="photos/dia9.jpg" alt="israel"><div class="tapc" id="tc9">mantén presionada 👆</div></div>');
+  act.appendChild(frame);
+  act.appendChild(el('<div class="psst">'+esc(HIDDEN_HINT[9])+'</div>'));
+  var wordReveal=el('<div class="psst" style="'+(S.words[9]?'':'display:none')+';color:var(--gold2);font-size:16px">🗝️ palabra encontrada: <b>'+esc(WORD[9])+'</b></div>');
+  act.appendChild(wordReveal);
+  act.appendChild(el('<div class="panel blocktext">'+esc(TXT_DAY9)+'</div>'));
+  var mis=el('<div class="mission"><b>✍️ MISIÓN:</b> ahora te toca a TI. escríbele a tommy 3 razones por las que lo extrañas. sí, se volteó el juego 😌</div>');
+  act.appendChild(mis);
+  act.appendChild(el('<a class="btn wa" href="'+wa("día 9 · mis 3 razones por las que te extraño:\n1. \n2. \n3. ")+'" target="_blank" rel="noopener">mandar mis 3 razones a Tommy 💬</a>'));
+  var img=frame.querySelector("img"), tc=frame.querySelector("#tc9");
+  var timer=null;
+  function revealWord(){
+    tc.style.display="none";
+    if(!S.words[9]){ wordReveal.style.display=""; wordReveal.classList.add("fade-in"); heartBurst(innerWidth/2,180,8); }
+    awardWord(9,{silent:true}); completeDay(9);
+  }
+  function down(e){ if(S.words[9]){revealWord();return;} timer=setTimeout(revealWord,600); img.style.transform="scale(1.03)"; }
+  function up(){ if(timer){clearTimeout(timer);timer=null;} img.style.transform=""; }
+  frame.addEventListener("touchstart",function(e){ down(e); },{passive:true});
+  frame.addEventListener("touchend",up); frame.addEventListener("touchcancel",up);
+  frame.addEventListener("mousedown",down); frame.addEventListener("mouseup",up); frame.addEventListener("mouseleave",up);
+  if(S.words[9]) tc.style.display="none";
+  addRituals(act,n);
+};
+
+/* DAY 10 — scratch card */
+RENDER[10]=function(act,n){
+  var done=!!S.completed[n];
+  var box=el('<div class="scratch-wrap"><div class="scratch-under"><div class="sb">'+esc(SCRATCH10.title)+'</div><div class="st">'+esc(SCRATCH10.body)+'</div><div class="corner" id="corner" style="'+(S.words[10]?'':'opacity:0')+'">🗝️ '+esc(WORD[10])+'</div></div><canvas class="scratch-canvas" id="sc"></canvas></div>');
+  act.appendChild(box);
+  act.appendChild(el('<div class="psst">'+esc(HIDDEN_HINT[10])+'</div>'));
+  var corner=box.querySelector("#corner");
+  var cv=box.querySelector("#sc"), under=box.querySelector(".scratch-under");
+  var ctx=cv.getContext("2d");
+  function setup(){
+    var r=under.getBoundingClientRect();
+    cv.width=r.width; cv.height=r.height;
+    var g=ctx.createLinearGradient(0,0,cv.width,cv.height);
+    g.addColorStop(0,"#b98f3e"); g.addColorStop(.5,"#e9c877"); g.addColorStop(1,"#a97f34");
+    ctx.fillStyle=g; ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.fillStyle="rgba(40,25,10,.5)"; ctx.font="700 16px -apple-system,sans-serif"; ctx.textAlign="center";
+    ctx.fillText("✦ RASPA AQUÍ ✦", cv.width/2, cv.height/2);
+    ctx.font="12px -apple-system,sans-serif"; ctx.fillText("(usa el dedo)", cv.width/2, cv.height/2+22);
+  }
+  if(done){ /* fully revealed */ box.querySelector("canvas").style.display="none"; corner.style.opacity="1"; }
+  else { setTimeout(setup,60); }
+  var drawing=false, wordDone=!!S.words[10], revealed=false;
+  function pos(e){ var r=cv.getBoundingClientRect(); var t=e.touches?e.touches[0]:e; return {x:t.clientX-r.left, y:t.clientY-r.top}; }
+  function scratch(p){
+    ctx.globalCompositeOperation="destination-out";
+    ctx.beginPath(); ctx.arc(p.x,p.y,24,0,7); ctx.fill();
+    // corner reveal (bottom-left region)
+    if(!wordDone && p.x < cv.width*0.42 && p.y > cv.height*0.62){
+      cornerScratch++; if(cornerScratch>7){ wordDone=true; corner.style.transition="opacity .5s"; corner.style.opacity="1"; awardWord(10,{silent:true}); heartBurst(innerWidth/2,260,8); }
+    }
+    checkPct();
+  }
+  var cornerScratch=0, lastCheck=0;
+  function checkPct(){
+    var now=Date.now(); if(now-lastCheck<160) return; lastCheck=now;
+    try{
+      var d=ctx.getImageData(0,0,cv.width,cv.height).data, cleared=0, step=40;
+      for(var i=3;i<d.length;i+=4*step){ if(d[i]===0) cleared++; }
+      var pct=cleared/(d.length/(4*step));
+      if(pct>0.5 && !revealed){ revealed=true; ctx.clearRect(0,0,cv.width,cv.height); cv.style.display="none"; confetti(60,true); completeDay(10);
+        if(!wordDone){ wordDone=true; corner.style.opacity="1"; awardWord(10,{silent:true}); } }
+    }catch(e){}
+  }
+  cv.addEventListener("mousedown",function(e){drawing=true;scratch(pos(e));});
+  cv.addEventListener("mousemove",function(e){if(drawing)scratch(pos(e));});
+  window.addEventListener("mouseup",function(){drawing=false;});
+  cv.addEventListener("touchstart",function(e){e.preventDefault();drawing=true;scratch(pos(e));},{passive:false});
+  cv.addEventListener("touchmove",function(e){e.preventDefault();if(drawing)scratch(pos(e));},{passive:false});
+  cv.addEventListener("touchend",function(){drawing=false;});
+
+  act.appendChild(el('<a class="btn wa" style="margin-top:6px" href="'+wa("tengo una idea mejor que taboga:")+'" target="_blank" rel="noopener">proponerle otro plan a tommy 💬</a>'));
+  if(GIFT[10]) act.appendChild(giftBlock(10));
+  addRituals(act,n);
+};
+
+/* DAY 12 — vale dorado + razones */
+RENDER[12]=function(act,n){
+  var vale=el('<div class="panel" style="background:linear-gradient(135deg,#2a1f10,#1c1226);border:1px solid var(--gold);box-shadow:0 0 0 1px rgba(233,200,119,.25),0 12px 30px rgba(0,0,0,.35)"><div class="blocktext" style="color:#f4e6cf">'+esc(VALE12)+'</div></div>');
+  act.appendChild(vale);
+  act.appendChild(el('<div class="rlabel" style="margin:6px 2px 12px">💛 5 razones por las que te extraño hoy</div>'));
+  var revealed=0;
+  RAZONES12.forEach(function(rz,i){
+    var opened = (!!S.completed[n]);
+    var r=el('<div class="razon'+(opened?' open':'')+'"><div class="n">'+(i+1)+'</div>'+(opened?'<div class="rt">'+esc(rz)+'</div>':'<div class="tapme">toca para revelar 👆</div>')+'</div>');
+    if(opened) revealed++;
+    r.addEventListener("click",function(){
+      if(r.classList.contains("open")) return;
+      r.classList.add("open");
+      r.innerHTML='<div class="n">'+(i+1)+'</div><div class="rt">'+esc(rz)+'</div>';
+      revealed++;
+      if(revealed>=RAZONES12.length){ setTimeout(function(){ completeDay(12); awardWord(12); },500); }
+    });
+    act.appendChild(r);
+  });
+  if(!!S.completed[n]){ /* already got word */ }
+  var mis=el('<div class="mission" style="margin-top:16px"><b>MISIÓN:</b> elige el plan de nuestro primer día juntos y mándamelo</div>');
+  act.appendChild(mis);
+  act.appendChild(el('<a class="btn wa" href="'+wa("día 12 · el plan de nuestro primer día juntos:\n")+'" target="_blank" rel="noopener">mandar mi plan a Tommy 💬</a>'));
+  addRituals(act,n);
+};
+
+/* DAY 13 — carta + heart reveals word */
+RENDER[13]=function(act,n){
+  var panel=el('<div class="panel"><div class="letter" id="lt13"></div><div class="heart-end" id="he" style="display:none"><div style="font-size:13px;color:var(--ink-faint);margin-bottom:6px">'+esc(HIDDEN_HINT[13])+'</div><span class="bigheart" id="bh">❤️</span></div></div>');
+  act.appendChild(panel);
+  var lt=panel.querySelector("#lt13"), he=panel.querySelector("#he"), bh=panel.querySelector("#bh");
+  var wordReveal=el('<div class="psst" style="'+(S.words[13]?'':'display:none')+';color:var(--gold2);font-size:17px;margin-top:12px">🗝️ última palabra: <b>'+esc(WORD[13])+'</b></div>');
+  function afterLetter(){ he.style.display="block"; he.classList.add("fade-in"); if(S.words[13]){ bh.textContent="💛"; } setTimeout(function(){ completeDay(13); },400); }
+  if(S.completed[13] || S.opened[13] && false){}
+  if(S.words[13]){ lt.textContent=L_DAY13; afterLetter(); }
+  else if(S.completed[13]){ lt.textContent=L_DAY13; afterLetter(); }
+  else {
+    var tw=typewriter(lt,L_DAY13,afterLetter);
+    panel.appendChild(el('<div class="skiphint">toca la carta para leerla completa ▸</div>'));
+    lt.addEventListener("click",function(){ tw.skip(); });
+  }
+  bh.addEventListener("click",function(){
+    if(!S.words[13]){ bh.textContent="💛"; awardWord(13,{silent:true}); var r=bh.getBoundingClientRect(); heartBurst(r.left+r.width/2,r.top,18); }
+    wordReveal.style.display=""; wordReveal.classList.add("fade-in");
+  });
+  panel.appendChild(wordReveal);
+  if(GIFT[13]) act.appendChild(giftBlock(13));
+  addRituals(act,n);
+};
+
+/* DAY 14 — vault */
+RENDER[14]=function(act,n){
+  var solved=!!S.completed[14];
+  var box=el('<div class="vaultbox"><div class="safe-visual" id="safe">'+(solved?'🔓':'🔐')+'</div><div class="vault-note">escribe la clave completa: las 13 palabras en orden. si te falta alguna, revisa tu diario de pistas abajo 👇</div></div>');
+  act.appendChild(box);
+
+  // chips helper (collected words)
+  var chipsWrap=el('<div class="chips" id="chips"></div>');
+  for(var i=1;i<=13;i++){
+    if(S.words[i]) { var ch=el('<div class="chip" data-w="'+esc(S.words[i])+'">'+esc(S.words[i])+'</div>'); chipsWrap.appendChild(ch); }
+    else chipsWrap.appendChild(el('<div class="chip miss">día '+i+' ❔</div>'));
+  }
+  box.appendChild(chipsWrap);
+
+  var input=el('<textarea class="txt" id="vaultIn" rows="3" placeholder="Hola Tommy Te..."></textarea>');
+  box.appendChild(input);
+  chipsWrap.addEventListener("click",function(e){
+    var c=e.target.closest(".chip"); if(!c||c.classList.contains("miss"))return;
+    input.value=(input.value?input.value.trim()+" ":"")+c.getAttribute("data-w"); input.focus();
+  });
+  var openBtn=el('<button class="btn" id="openVault" style="margin-top:12px">ABRIR LA BÓVEDA 🔓</button>');
+  box.appendChild(openBtn);
+  box.appendChild(el('<div class="vault-fail" id="vfail"></div>'));
+
+  var reveal=el('<div id="vaultReveal" style="margin-top:18px"></div>');
+  act.appendChild(reveal);
+
+  function fail(){
+    $("#vfail").textContent="mmm no exactamente... revisa tu diario de pistas 🗝️";
+    box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+  }
+  function openVault(){
+    if(norm(input.value)!==norm(PHRASE)){ fail(); return; }
+    $("#vfail").textContent=""; $("#safe").classList.add("open"); $("#safe").textContent="🔓";
+    openBtn.disabled=true; openBtn.textContent="BÓVEDA ABIERTA 💛";
+    confetti(200,true);
+    completeDay(14);
+    doReveal(reveal);
+  }
+  openBtn.addEventListener("click",openVault);
+  if(solved){ input.value=PHRASE; doReveal(reveal); openBtn.disabled=true; openBtn.textContent="BÓVEDA ABIERTA 💛"; }
+};
+
+function doReveal(container){
+  container.innerHTML="";
+  var steps=[];
+  // 1 video
+  steps.push(function(){
+    var s=el('<div class="reveal-step"></div>');
+    s.appendChild(el('<div class="step-title">algo que te dejé aquí 🎬</div>'));
+    s.appendChild(videoSlot("video/final.mp4","tommy dejó algo aquí... cargando 👀"));
+    return s;
+  });
+  // 2 boarding pass
+  steps.push(function(){
+    var s=el('<div class="reveal-step"></div>');
+    s.appendChild(boardingPass());
+    return s;
+  });
+  // 3 puzzle
+  steps.push(function(){
+    var s=el('<div class="reveal-step"><div class="step-title">y esto... ¿reconoces la foto? 😏</div><div class="puzzle-wrap"><div class="puzzle full" id="vaultPuzzle"></div></div><div class="pcount" style="margin-top:12px">te dije que esta foto volvía 😏 te amo princesssss</div></div>');
+    return s;
+  });
+  // 4 chart
+  steps.push(function(){
+    var s=el('<div class="reveal-step"></div>');
+    s.appendChild(chartBlock(14,"así me extrañaste estos 14 días 📊"));
+    return s;
+  });
+  // 5 final
+  steps.push(function(){
+    return el('<div class="reveal-step"><div class="finalline">gracias por jugar goofy. ahora ven que te tengo que morder. <span class="sig">— Tu bebe</span></div></div>');
+  });
+  var i=0;
+  (function next(){
+    if(i>=steps.length) return;
+    var node=steps[i]();
+    node.style.opacity="0"; node.style.transform="translateY(16px)"; node.style.transition="opacity .6s, transform .6s";
+    container.appendChild(node);
+    if(i===2){ renderPuzzleInto($("#vaultPuzzle")); $$(".ptile",$("#vaultPuzzle")).forEach(function(t){t.classList.remove("cov");}); }
+    if(i===1){ requestAnimationFrame(function(){ node.querySelector(".boarding").classList.add("in"); }); }
+    requestAnimationFrame(function(){ node.style.opacity="1"; node.style.transform="none"; });
+    i++;
+    setTimeout(next, 1100);
+  })();
+}
+
+function boardingPass(){
+  return el(
+  '<div class="boarding">'+
+    '<div class="bp-notch l"></div><div class="bp-notch r"></div>'+
+    '<div class="bp-head"><div class="logo">💛✈️</div><div class="fl"><b>TH AIRLINES</b><span>VUELO TH-1907</span></div></div>'+
+    '<div class="bp-body">'+
+      '<div class="bp-row"><div class="bp-cell"><div class="k">Pasajera</div><div class="v">Vicky</div></div><div class="bp-cell"><div class="k">Clase</div><div class="v">Primera (obvio)</div></div></div>'+
+      '<div class="bp-row"><div class="bp-cell"><div class="k">Origen</div><div class="v">Sin ti</div></div><div class="bp-cell"><div class="k">Destino</div><div class="v">Conmigo</div></div></div>'+
+      '<div class="bp-row"><div class="bp-cell"><div class="k">Fecha</div><div class="v">19 JUL 2026</div></div><div class="bp-cell"><div class="k">Asiento</div><div class="v">A mi lado</div></div><div class="bp-cell"><div class="k">Gate</div><div class="v">∞</div></div></div>'+
+      '<div class="bp-itin"><div class="k">Itinerario</div><p>1. me buscas en el aeropuerto (no llegues tarde payasa) → 2. me abrazas fuerte, es obligatorio → 3. DESTINO SIGUIENTE: lo decide la pasajera 😏 elige bien...</p></div>'+
+      '<div class="bp-bag">🎁 <b>EQUIPAJE ESPECIAL:</b> 2 artículos por reclamar — entrega personal de tu bebe. fecha exacta: clasificada 😌</div>'+
+    '</div>'+
+    '<div class="bp-foot"><div class="barcode"></div><div class="bp-stamp">CONFIRMADO<br>NO REEMBOLSABLE<br>NO TRANSFERIBLE</div></div>'+
+  '</div>');
+}
+
+/* chart block */
+function chartBlock(upTo, title){
+  var wrap=el('<div class="panel"><div class="step-title" style="margin-bottom:14px">'+esc(title)+'</div><div class="chart" id="chart_'+upTo+'"></div></div>');
+  var c=wrap.querySelector("#chart_"+upTo);
+  for(var d=1;d<=upTo;d++){
+    var v=S.extra[d];
+    var bar=el('<div class="bar"><i class="'+(v==null?'empty':'')+'"></i><span>'+d+'</span></div>');
+    c.appendChild(bar);
+    (function(bar,v){ setTimeout(function(){ bar.querySelector("i").style.height=(v==null?4:Math.max(6,v))+"%"; },60); })(bar,v);
+  }
+  return wrap;
+}
+
+/* ===================== BOOT ===================== */
+initLock();
+if(DEBUG){
+  var db=el('<div class="debug-badge">DEBUG</div>'); document.body.appendChild(db);
+  $("#lock").classList.add("hidden"); S.unlocked=true; showHome();
+} else if(S.unlocked){
+  $("#lock").classList.add("hidden"); showHome();
+}
+
+// cleanup running loops when leaving a day
+(function(){
+  var origClose=closeDay;
+  closeDay=function(){ var a=$("#dwrap .activity"); if(a&&a._cleanup){try{a._cleanup();}catch(e){}} origClose(); };
+})();
+
+window.addEventListener("resize",function(){ var cv=$("#confetti"); });
+</script>
