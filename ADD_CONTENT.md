@@ -1,23 +1,35 @@
 # Cómo agregar los videos (y actualizar el sitio)
 
-Este calendario ya está 100% funcional. Faltan **solo 2 videos** que se agregan después. Mientras no estén, el sitio muestra un placeholder bonito ("tommy está preparando algo... 👀") — nunca se ve roto.
+Este calendario ya está 100% funcional. El video del cumpleaños (Día 3) **ya está subido** ✅. Falta **solo 1 video** (el del Día 14), que se agrega después. Mientras no esté, el sitio muestra un placeholder bonito ("tommy dejó algo aquí... cargando 👀") — nunca se ve roto.
 
-## Los 2 videos pendientes
+## Video pendiente
 
 | Archivo | Dónde aparece | Cuándo subirlo |
 |---|---|---|
-| `video/cumple.mp4` | Día 3 (cumpleaños), debajo de la carta | **antes del 8 de julio 2026** |
+| ~~`video/cumple.mp4`~~ | ~~Día 3 (cumpleaños)~~ | ✅ **LISTO** (subido) |
 | `video/final.mp4` | Día 14 (la bóveda), primer paso del final | **antes del 19 de julio 2026** |
 
 **Formato recomendado:** MP4 (H.264 + AAC), vertical, máx ~30–40 MB para que cargue rápido en el iPhone de Vicky.
-Si tu video es `.mov` (grabado con iPhone), conviértelo con:
+
+Si tu video es `.MOV` de iPhone, casi seguro es **HEVC 10-bit HDR** (se vería lavado/gris en la web sin convertir bien). Usa exactamente este comando — es el mismo que usé para el video del cumple (convierte HDR→SDR con tono correcto, comprime, y arregla la orientación):
 
 ```bash
 # desde ~/mientras-no-estoy
-ffmpeg -i /ruta/al/video.mov -vf "scale='min(1080,iw)':-2" -c:v libx264 -crf 24 -c:a aac -movflags +faststart video/cumple.mp4
+ffmpeg -y -i /ruta/al/video.MOV \
+  -map 0:0 -map 0:1 \
+  -vf "zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p" \
+  -c:v libx264 -crf 25 -preset medium -pix_fmt yuv420p -movflags +faststart \
+  -c:a aac -b:a 128k -ac 2 \
+  video/final.mp4
 ```
 
-(cambia `cumple.mp4` por `final.mp4` según corresponda)
+**Poster (opcional pero recomendado):** para que se vea un thumbnail bonito en vez de una caja negra, saca un frame:
+
+```bash
+ffmpeg -y -ss 0.6 -i video/final.mp4 -frames:v 1 -vf "scale=720:-2" -q:v 3 video/final_poster.jpg
+```
+
+...y avísame para conectarlo en el Día 14 (o dime y lo dejo listo yo). El del cumple ya tiene su poster.
 
 ## Subir un video (o cualquier cambio)
 

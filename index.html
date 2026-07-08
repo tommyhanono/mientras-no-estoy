@@ -957,12 +957,13 @@ function typewriter(node, text, done){
 }
 
 /* media slot (video/audio graceful) */
-function videoSlot(src, placeholder){
+function videoSlot(src, placeholder, poster){
   var wrap=el('<div class="mediaslot"></div>');
   var ph=el('<div class="slot-ph"><span class="em">🎬</span>'+esc(placeholder)+'</div>');
   wrap.appendChild(ph);
   var v=document.createElement("video");
   v.setAttribute("playsinline",""); v.setAttribute("controls",""); v.setAttribute("preload","metadata");
+  if(poster) v.setAttribute("poster", poster);
   v.src=src; v.style.display="none";
   v.addEventListener("loadeddata",function(){ ph.style.display="none"; v.style.display="block"; });
   v.addEventListener("error",function(){ v.remove(); });
@@ -1065,7 +1066,7 @@ RENDER[3]=function(act,n){
     if(restShown) return; restShown=true;
     var letter=el('<div class="panel"><div class="letter">'+esc(L_DAY3)+'</div></div>');
     letter.classList.add("fade-in"); act.insertBefore(letter, giftAnchor);
-    var vs=videoSlot("video/cumple.mp4","tommy está preparando algo... 👀");
+    var vs=videoSlot("video/cumple.mp4","tommy está preparando algo... 👀","video/cumple_poster.jpg");
     vs.classList.add("fade-in"); act.insertBefore(vs, giftAnchor);
     setTimeout(function(){ completeDay(3); awardWord(3); }, 900);
   }
