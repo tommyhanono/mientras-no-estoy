@@ -379,6 +379,14 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bor
 .step-title{font-family:var(--serif2);font-style:italic;text-align:center;color:var(--gold2);font-size:19px;margin-bottom:12px}
 .finalline{font-family:var(--serif);font-size:20px;text-align:center;color:#f2e7d4;line-height:1.5;padding:10px 6px 4px}
 .finalline .sig{color:var(--gold2)}
+/* key-phrase reveal (vault payoff) */
+.kp-sub{font-family:var(--serif2);font-style:italic;color:var(--ink-dim);font-size:16px;margin-bottom:14px}
+.keyphrase{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:7px 12px;margin:6px auto 16px;padding:0 4px;max-width:420px}
+.kpw{font-family:var(--serif);font-size:25px;font-weight:600;color:var(--gold2);opacity:0;transform:translateY(12px) scale(.82);
+  text-shadow:0 0 22px rgba(233,200,119,.55), 0 0 3px rgba(233,200,119,.4);animation:kpin .6s cubic-bezier(.2,1.35,.35,1) forwards}
+@keyframes kpin{to{opacity:1;transform:none}}
+.kp-out{font-family:var(--serif2);font-style:italic;font-size:18px;color:var(--rose);opacity:0;transition:opacity 1s;margin-top:2px}
+.kp-out.show{opacity:1}
 
 .footer-note{text-align:center;color:var(--ink-faint);font-size:12px;margin-top:30px;font-family:var(--serif2);font-style:italic}
 .debug-badge{position:fixed;bottom:8px;right:8px;z-index:90;background:rgba(233,90,110,.85);color:#fff;font-size:10px;font-weight:700;padding:4px 9px;border-radius:99px;letter-spacing:.5px}
@@ -1423,51 +1431,82 @@ RENDER[14]=function(act,n){
   if(solved){ input.value=PHRASE; doReveal(reveal); openBtn.disabled=true; openBtn.textContent="BÓVEDA ABIERTA 💛"; }
 };
 
+/* the payoff of the 14-day word hunt: the full phrase she assembled, glowing in */
+function phraseRevealStep(){
+  var s=el('<div class="reveal-step" style="text-align:center">'+
+    '<div class="step-title">juntaste las 13 palabras, goofy 🗝️</div>'+
+    '<div class="kp-sub">esto es lo que decían todas juntas:</div>'+
+    '<div class="keyphrase" id="kphrase"></div>'+
+    '<div class="kp-out" id="kpout">y sí. cada palabra. te amo princesssss 🤍</div>'+
+  '</div>');
+  var box=s.querySelector("#kphrase");
+  var words=PHRASE.split(" ");
+  words.forEach(function(w,i){
+    var sp=el('<span class="kpw">'+esc(w)+'</span>');
+    sp.style.animationDelay=(0.15+i*0.16)+"s";
+    box.appendChild(sp);
+  });
+  var out=s.querySelector("#kpout");
+  setTimeout(function(){ out.classList.add("show"); }, words.length*160+700);
+  return s;
+}
+
+/* check whether a video actually exists/plays before we show its slot */
+function probeVideo(src, cb){
+  try{
+    var v=document.createElement("video"); v.preload="metadata"; var done=false;
+    function fin(ok){ if(done) return; done=true; try{ v.removeAttribute("src"); v.load(); }catch(e){} cb(ok); }
+    v.addEventListener("loadedmetadata",function(){ fin(true); });
+    v.addEventListener("error",function(){ fin(false); });
+    v.src=src;
+    setTimeout(function(){ fin(false); }, 4500);
+  }catch(e){ cb(false); }
+}
+
 function doReveal(container){
   container.innerHTML="";
   // day 14 has no slider; give it a symbolic peak so the finale chart reads as 14 full days
   if(S.extra[14]==null){ S.extra[14]=100; save(); }
-  var steps=[];
-  // 1 video
-  steps.push(function(){
-    var s=el('<div class="reveal-step"></div>');
-    s.appendChild(el('<div class="step-title">algo que te dejé aquí 🎬</div>'));
-    s.appendChild(videoSlot("video/final.mp4","tommy dejó algo aquí... cargando 👀"));
-    return s;
+  // the video is a BONUS: only show it if final.mp4 actually exists (never a stuck "cargando")
+  probeVideo("video/final.mp4", function(hasVideo){
+    var steps=[];
+    // 1 phrase reveal — the climax of the whole word hunt (never depends on a video)
+    steps.push(phraseRevealStep);
+    // 2 video (optional bonus)
+    if(hasVideo){
+      steps.push(function(){
+        var s=el('<div class="reveal-step"></div>');
+        s.appendChild(el('<div class="step-title">y además... algo que te grabé 🎬</div>'));
+        s.appendChild(videoSlot("video/final.mp4","cargando... 👀","video/final_poster.jpg"));
+        return s;
+      });
+    }
+    // 3 boarding pass
+    steps.push(function(){ var s=el('<div class="reveal-step"></div>'); s.appendChild(boardingPass()); return s; });
+    // 4 puzzle
+    steps.push(function(){
+      return el('<div class="reveal-step"><div class="step-title">y esto... ¿reconoces la foto? 😏</div><div class="puzzle-wrap"><div class="puzzle full" id="vaultPuzzle"></div></div><div class="pcount" style="margin-top:12px">te dije que esta foto volvía 😏 te amo princesssss</div></div>');
+    });
+    // 5 chart
+    steps.push(function(){ var s=el('<div class="reveal-step"></div>'); s.appendChild(chartBlock(14,"así me extrañaste estos 14 días 📊")); return s; });
+    // 6 final
+    steps.push(function(){ return el('<div class="reveal-step"><div class="finalline">gracias por jugar goofy. ahora ven que te tengo que morder. <span class="sig">— Tu bebe</span></div></div>'); });
+
+    var i=0;
+    (function next(){
+      if(i>=steps.length) return;
+      var node=steps[i]();
+      node.style.opacity="0"; node.style.transform="translateY(16px)"; node.style.transition="opacity .6s, transform .6s";
+      container.appendChild(node);
+      var pz=node.querySelector("#vaultPuzzle");
+      if(pz){ renderPuzzleInto(pz); $$(".ptile",pz).forEach(function(t){ t.classList.remove("cov"); }); }
+      var bp=node.querySelector(".boarding");
+      if(bp){ requestAnimationFrame(function(){ bp.classList.add("in"); }); }
+      requestAnimationFrame(function(){ node.style.opacity="1"; node.style.transform="none"; });
+      i++;
+      setTimeout(next, 1100);
+    })();
   });
-  // 2 boarding pass
-  steps.push(function(){
-    var s=el('<div class="reveal-step"></div>');
-    s.appendChild(boardingPass());
-    return s;
-  });
-  // 3 puzzle
-  steps.push(function(){
-    var s=el('<div class="reveal-step"><div class="step-title">y esto... ¿reconoces la foto? 😏</div><div class="puzzle-wrap"><div class="puzzle full" id="vaultPuzzle"></div></div><div class="pcount" style="margin-top:12px">te dije que esta foto volvía 😏 te amo princesssss</div></div>');
-    return s;
-  });
-  // 4 chart
-  steps.push(function(){
-    var s=el('<div class="reveal-step"></div>');
-    s.appendChild(chartBlock(14,"así me extrañaste estos 14 días 📊"));
-    return s;
-  });
-  // 5 final
-  steps.push(function(){
-    return el('<div class="reveal-step"><div class="finalline">gracias por jugar goofy. ahora ven que te tengo que morder. <span class="sig">— Tu bebe</span></div></div>');
-  });
-  var i=0;
-  (function next(){
-    if(i>=steps.length) return;
-    var node=steps[i]();
-    node.style.opacity="0"; node.style.transform="translateY(16px)"; node.style.transition="opacity .6s, transform .6s";
-    container.appendChild(node);
-    if(i===2){ renderPuzzleInto($("#vaultPuzzle")); $$(".ptile",$("#vaultPuzzle")).forEach(function(t){t.classList.remove("cov");}); }
-    if(i===1){ requestAnimationFrame(function(){ node.querySelector(".boarding").classList.add("in"); }); }
-    requestAnimationFrame(function(){ node.style.opacity="1"; node.style.transform="none"; });
-    i++;
-    setTimeout(next, 1100);
-  })();
 }
 
 function boardingPass(){

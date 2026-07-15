@@ -1,13 +1,17 @@
 # Cómo agregar los videos (y actualizar el sitio)
 
-Este calendario ya está 100% funcional. El video del cumpleaños (Día 3) **ya está subido** ✅. Falta **solo 1 video** (el del Día 14), que se agrega después. Mientras no esté, el sitio muestra un placeholder bonito ("tommy dejó algo aquí... cargando 👀") — nunca se ve roto.
+Este calendario ya está 100% funcional. El video del cumpleaños (Día 3) **ya está subido** ✅.
 
-## Video pendiente
+**El video del Día 14 ahora es OPCIONAL.** La bóveda ya tiene su clímax completo sin ningún video: cuando ella mete la clave, aparecen las 13 palabras que juntó, animadas en dorado ("juntaste las 13 palabras, goofy 🗝️ ... te amo princesssss 🤍"), y de ahí sigue el boarding pass, el rompecabezas y el gráfico. Si NO haces el video del Día 14, no se ve nada roto ni ningún "cargando" — simplemente no aparece.
 
-| Archivo | Dónde aparece | Cuándo subirlo |
+Si SÍ quieres agregar `video/final.mp4` después, aparece **como bonus** justo después de la revelación de la frase. Totalmente opcional.
+
+## Video opcional (Día 14)
+
+| Archivo | Dónde aparece | Estado |
 |---|---|---|
 | ~~`video/cumple.mp4`~~ | ~~Día 3 (cumpleaños)~~ | ✅ **LISTO** (subido) |
-| `video/final.mp4` | Día 14 (la bóveda), primer paso del final | **antes del 19 de julio 2026** |
+| `video/final.mp4` | Día 14 — bonus después de la frase | **opcional** (si no lo subes, la bóveda funciona igual de bonita) |
 
 **Formato recomendado:** MP4 (H.264 + AAC), vertical, máx ~30–40 MB para que cargue rápido en el iPhone de Vicky.
 
