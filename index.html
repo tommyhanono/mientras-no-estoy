@@ -387,6 +387,26 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bor
 @keyframes kpin{to{opacity:1;transform:none}}
 .kp-out{font-family:var(--serif2);font-style:italic;font-size:18px;color:var(--rose);opacity:0;transition:opacity 1s;margin-top:2px}
 .kp-out.show{opacity:1}
+/* cartera de vales */
+.vale-card{background:linear-gradient(135deg,rgba(233,200,119,.12),rgba(255,255,255,.04));border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:10px;text-align:left;display:flex;gap:12px;align-items:center}
+.vale-card .ve{font-size:26px;flex:0 0 auto}
+.vale-card .vt{font-family:var(--serif);font-size:16px;color:var(--gold2);font-weight:600;margin-bottom:2px}
+.vale-card .vd{font-size:13px;color:var(--ink-dim);line-height:1.4}
+/* bóveda interna (vault-inside-a-vault) */
+.inner-vault{background:linear-gradient(160deg,#1c0e1a,#0d0812);border:1px solid #8a4f60;border-radius:22px;padding:26px 18px;text-align:center;
+  box-shadow:0 0 0 1px rgba(231,154,168,.22), 0 16px 44px rgba(0,0,0,.55);margin-top:6px}
+.iv-safe{font-size:58px;margin-bottom:6px;filter:drop-shadow(0 8px 24px rgba(231,154,168,.4));transition:transform .5s}
+.iv-safe.open{transform:scale(1.1) rotate(-4deg)}
+.iv-title{font-family:var(--serif);font-size:21px;font-weight:600;color:var(--gold2);letter-spacing:.6px;margin-bottom:8px}
+.iv-note{font-family:var(--serif2);font-style:italic;color:#eec7d1;font-size:17px;line-height:1.5;margin:0 auto 18px;max-width:340px}
+.iv-caption{font-family:var(--serif2);font-style:italic;color:var(--gold2);font-size:18px;margin-bottom:16px;line-height:1.45}
+.iv-fail{color:var(--rose);font-family:var(--serif2);font-style:italic;font-size:16px;min-height:22px;margin-top:10px}
+.gift-card{border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-bottom:12px;background:#160c14;box-shadow:var(--shadow)}
+.gift-card img{width:100%;display:block}
+.gift-ph{padding:38px 16px;text-align:center;font-family:var(--serif2);font-style:italic;color:var(--gold2);font-size:18px;background:linear-gradient(135deg,rgba(231,154,168,.12),rgba(58,26,72,.45))}
+.gift-ph .em{font-size:36px;display:block;margin-bottom:8px}
+.gift-ph .sm{font-size:12.5px;color:var(--ink-faint);display:block;margin-top:6px}
+.gift-label{font-family:var(--serif);color:var(--gold2);font-size:14px;text-align:left;padding:2px 2px 8px;letter-spacing:.5px}
 
 .footer-note{text-align:center;color:var(--ink-faint);font-size:12px;margin-top:30px;font-family:var(--serif2);font-style:italic}
 .debug-badge{position:fixed;bottom:8px;right:8px;z-index:90;background:rgba(233,90,110,.85);color:#fff;font-size:10px;font-weight:700;padding:4px 9px;border-radius:99px;letter-spacing:.5px}
@@ -455,6 +475,13 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bor
 var DEBUG = /[?&]debug=1/.test(location.search);
 var WA = "50766818669";
 var HER = "Vicky", ME = "Tommy";
+
+/* ===== CLAVE DE LA BÓVEDA INTERNA (vault-inside-a-vault) =====
+   Esta es la clave que Tommy le dice a Vicky EN PERSONA para abrir los regalos.
+   Cámbiala por la que quieras — no distingue mayúsculas/acentos. */
+var INNER_KEY = "abreme";
+/* cuántos regalos hay adentro (fotos: photos/regalo1.jpg, regalo2.jpg, ...) */
+var GIFT_COUNT = 2;
 
 /* Panama = UTC-5. Day 1 = 2026-07-06 00:00 Panamá = 05:00 UTC. */
 function unlockMs(n){ return Date.UTC(2026,6,5+n,5,0,0); }        // n=1..14
@@ -611,6 +638,7 @@ function fix(o){
   o.opened = o.opened||{}; o.completed = o.completed||{}; o.words = o.words||{};
   o.extra = o.extra||{}; o.answers = o.answers||{}; o.quiz = o.quiz||{};
   o.birthday = !!o.birthday; o.bonusVale = !!o.bonusVale;
+  o.innerOpened = !!o.innerOpened;
   return o;
 }
 function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(S)); }catch(e){} }
@@ -1463,6 +1491,72 @@ function probeVideo(src, cb){
   }catch(e){ cb(false); }
 }
 
+/* cartera de vales: los cupones que se ganó en los juegos, canjeables al reencontrarse */
+function valesStep(){
+  var vales=[];
+  if(S.completed[6])  vales.push({e:"🫵", t:"Vale de cosquillas", d:"una sesión sin derecho a quejarse. canjeable cuando yo quiera 😏"});
+  if(S.bonusVale)     vales.push({e:"😴", t:"Vale de nap time", d:"yo pongo el brazo. (te lo ganaste con 5/5, genia)"});
+  if(S.completed[12]) vales.push({e:"👑", t:"Vale dorado", d:"un día entero donde TÚ decides todo"});
+  if(!vales.length) return null;
+  var s=el('<div class="reveal-step"><div class="step-title">y todo esto te lo ganaste... canjeable cuando llegue 🎟️</div></div>');
+  vales.forEach(function(v){
+    s.appendChild(el('<div class="vale-card"><div class="ve">'+v.e+'</div><div><div class="vt">'+esc(v.t)+'</div><div class="vd">'+esc(v.d)+'</div></div></div>'));
+  });
+  return s;
+}
+
+/* bóveda interna: se abre con la clave que Tommy dice EN PERSONA -> fotos de los regalos */
+function innerVaultStep(){
+  var s=el('<div class="reveal-step"><div class="inner-vault" id="innerVault"></div></div>');
+  renderInnerVault(s.querySelector("#innerVault"));
+  return s;
+}
+function renderInnerVault(box){
+  if(S.innerOpened){ renderGifts(box); return; }
+  box.innerHTML=
+    '<div class="iv-safe">🔐</div>'+
+    '<div class="iv-title">UNA BÓVEDA MÁS</div>'+
+    '<div class="iv-note">esta no se abre sola, goofy. espérame 🤍<br>la clave te la doy YO, en persona.</div>'+
+    '<input class="txt" id="ivIn" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="la clave que te dije...">'+
+    '<button class="btn" id="ivBtn" style="margin-top:12px">abrir 🔐</button>'+
+    '<div class="iv-fail" id="ivFail"></div>';
+  var inp=box.querySelector("#ivIn"), btn=box.querySelector("#ivBtn"), fail=box.querySelector("#ivFail");
+  function tryOpen(){
+    if(norm(inp.value)===norm(INNER_KEY) && norm(inp.value)!==""){
+      S.innerOpened=true; save();
+      confetti(180,true);
+      renderGifts(box);
+    } else {
+      fail.textContent="esa no es... dile a tommy que te la recuerde 😏";
+      box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+    }
+  }
+  btn.addEventListener("click",tryOpen);
+  inp.addEventListener("keydown",function(e){ if(e.key==="Enter") tryOpen(); });
+}
+function renderGifts(box){
+  box.innerHTML=
+    '<div class="iv-safe open">🔓</div>'+
+    '<div class="iv-title">TUS '+GIFT_COUNT+' REGALOS 🎁</div>'+
+    '<div class="iv-caption">esto es lo que te tenía guardado, princesa. te amo princesssss 🤍</div>'+
+    '<div id="giftGrid" class="fade-in"></div>';
+  var grid=box.querySelector("#giftGrid");
+  for(var n=1;n<=GIFT_COUNT;n++) grid.appendChild(giftCard(n));
+}
+function giftCard(n){
+  var wrap=el('<div><div class="gift-label">regalo '+n+'</div><div class="gift-card"></div></div>');
+  var card=wrap.querySelector(".gift-card");
+  var ph=el('<div class="gift-ph"><span class="em">🎁</span>sorpresa cargando...<span class="sm">tommy la sube pronto 😌</span></div>');
+  card.appendChild(ph);
+  var img=document.createElement("img");
+  img.alt="regalo "+n; img.style.display="none";
+  img.addEventListener("load",function(){ ph.style.display="none"; img.style.display="block"; });
+  img.addEventListener("error",function(){ /* deja el placeholder bonito */ });
+  img.src="photos/regalo"+n+".jpg";
+  card.appendChild(img);
+  return wrap;
+}
+
 function doReveal(container){
   container.innerHTML="";
   // day 14 has no slider; give it a symbolic peak so the finale chart reads as 14 full days
@@ -1489,13 +1583,18 @@ function doReveal(container){
     });
     // 5 chart
     steps.push(function(){ var s=el('<div class="reveal-step"></div>'); s.appendChild(chartBlock(14,"así me extrañaste estos 14 días 📊")); return s; });
-    // 6 final
+    // 6 cartera de vales (se salta si no ganó ninguno)
+    steps.push(valesStep);
+    // 7 final line (despedida digital)
     steps.push(function(){ return el('<div class="reveal-step"><div class="finalline">gracias por jugar goofy. ahora ven que te tengo que morder. <span class="sig">— Tu bebe</span></div></div>'); });
+    // 8 bóveda interna — la que Tommy abre EN PERSONA con los regalos
+    steps.push(innerVaultStep);
 
     var i=0;
     (function next(){
       if(i>=steps.length) return;
-      var node=steps[i]();
+      var node=steps[i](); i++;
+      if(!node){ next(); return; }   // paso vacío (ej: sin vales) -> siguiente sin pausa
       node.style.opacity="0"; node.style.transform="translateY(16px)"; node.style.transition="opacity .6s, transform .6s";
       container.appendChild(node);
       var pz=node.querySelector("#vaultPuzzle");
@@ -1503,7 +1602,6 @@ function doReveal(container){
       var bp=node.querySelector(".boarding");
       if(bp){ requestAnimationFrame(function(){ bp.classList.add("in"); }); }
       requestAnimationFrame(function(){ node.style.opacity="1"; node.style.transform="none"; });
-      i++;
       setTimeout(next, 1100);
     })();
   });
