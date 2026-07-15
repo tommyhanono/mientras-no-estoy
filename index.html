@@ -444,6 +444,68 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bor
 
 .footer-note{text-align:center;color:var(--ink-faint);font-size:12px;margin-top:30px;font-family:var(--serif2);font-style:italic}
 .debug-badge{position:fixed;bottom:8px;right:8px;z-index:90;background:rgba(233,90,110,.85);color:#fff;font-size:10px;font-weight:700;padding:4px 9px;border-radius:99px;letter-spacing:.5px}
+
+/* ===================== ÚLTIMA PÁGINA (gift room) ===================== */
+#giftRoom{position:fixed;inset:0;z-index:36;overflow-y:auto;-webkit-overflow-scrolling:touch;opacity:0;transition:opacity .7s ease;
+  background:radial-gradient(120% 75% at 50% -8%, #451a3a 0%, #2a1030 42%, #160a22 78%, #0d0616 100%);
+  padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+#giftRoom.on{opacity:1}
+#grHearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.grh{position:absolute;bottom:-30px;opacity:0;animation:grrise linear infinite;filter:drop-shadow(0 2px 6px rgba(0,0,0,.3))}
+@keyframes grrise{0%{transform:translateY(0) rotate(0);opacity:0}10%{opacity:.8}90%{opacity:.5}100%{transform:translateY(-112vh) rotate(var(--r));opacity:0}}
+.gr-wrap{position:relative;z-index:2;max-width:480px;margin:0 auto;padding:0 20px}
+.gr-top{position:sticky;top:0;z-index:6;display:flex;justify-content:flex-start;padding:12px 0 8px;padding-top:calc(12px + env(safe-area-inset-top));
+  background:linear-gradient(180deg, rgba(22,10,34,.9), transparent)}
+.gr-sec{padding:40px 0;opacity:0;transform:translateY(24px);transition:opacity .8s, transform .8s}
+.gr-sec.seen{opacity:1;transform:none}
+.gr-eyebrow{text-align:center;font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold-deep);margin-bottom:12px}
+
+/* hero */
+.gr-hero{min-height:82vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 0}
+.gr-hero .crown{font-size:50px;filter:drop-shadow(0 8px 24px rgba(233,200,119,.45));animation:beat 2.8s ease-in-out infinite}
+.gr-hero h1{font-family:var(--serif);font-weight:600;font-size:40px;line-height:1.08;margin:18px 0 4px;letter-spacing:.5px;
+  background:linear-gradient(100deg,#f4dd9a 15%,#fff6df 40%,#e9c877 60%,#c79b45 85%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:220% auto;animation:shimmer 4s linear infinite}
+@keyframes shimmer{to{background-position:220% center}}
+.gr-hero .sub{font-family:var(--serif2);font-style:italic;color:#f0d9df;font-size:19px;margin-top:10px;max-width:320px}
+.gr-hero .scroll{margin-top:34px;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);animation:bobdown 1.8s ease-in-out infinite}
+@keyframes bobdown{0%,100%{transform:translateY(0);opacity:.6}50%{transform:translateY(6px);opacity:1}}
+
+/* letter */
+.gr-letter{background:linear-gradient(160deg, rgba(255,255,255,.055), rgba(255,255,255,.02));border:1px solid var(--line);border-radius:22px;
+  padding:26px 22px;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.gr-letter .lt{font-family:var(--serif);font-size:16.5px;line-height:1.75;white-space:pre-wrap;color:#f3e8d6}
+.gr-letter .sig2{color:var(--gold2)}
+
+/* montage */
+.montage{position:relative;width:100%;aspect-ratio:4/5;border-radius:22px;overflow:hidden;border:1px solid var(--gold);
+  box-shadow:0 0 0 1px rgba(233,200,119,.25), 0 20px 50px rgba(0,0,0,.55);background:#160c22}
+.mslide{position:absolute;inset:0;opacity:0;background-size:cover;background-position:center;transition:opacity 1.1s ease}
+.mslide.active{opacity:1;animation:ken 5.2s ease-out both}
+@keyframes ken{from{transform:scale(1.14)}to{transform:scale(1.02)}}
+.montage .mgrad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,6,20,.72));pointer-events:none}
+.montage .mdate{position:absolute;top:14px;left:14px;background:rgba(10,6,20,.6);border:1px solid var(--line);color:var(--gold2);
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;padding:5px 12px;border-radius:99px;backdrop-filter:blur(4px)}
+.montage .mcap{position:absolute;left:16px;right:16px;bottom:44px;font-family:var(--serif);font-size:20px;color:#fff;text-shadow:0 2px 12px #000;min-height:26px;transition:opacity .5s}
+.montage .mdots{position:absolute;left:0;right:0;bottom:14px;display:flex;gap:6px;justify-content:center}
+.montage .mdot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);transition:.3s}
+.montage .mdot.on{background:var(--gold2);width:18px;border-radius:99px}
+.montage .mtap{position:absolute;top:0;bottom:0;width:40%;z-index:3}
+.montage .mtap.l{left:0}.montage .mtap.r{right:0}
+
+/* stats */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stat{background:linear-gradient(160deg, rgba(233,200,119,.12), rgba(255,255,255,.03));border:1px solid var(--line);border-radius:18px;padding:20px 12px;text-align:center}
+.stat .num{font-family:var(--serif);font-size:38px;font-weight:600;color:var(--gold2);line-height:1;text-shadow:0 0 20px rgba(233,200,119,.4)}
+.stat .lbl{font-size:12.5px;color:var(--ink-dim);margin-top:8px;line-height:1.35}
+.stat-inf{text-align:center;margin-top:14px;font-family:var(--serif2);font-style:italic;color:var(--rose);font-size:18px}
+.stat-inf b{font-family:var(--serif);font-style:normal;font-size:26px;color:var(--gold2);vertical-align:-2px}
+
+/* gifts inside room */
+.gr-gifts .iv-title{margin-bottom:4px}
+.gr-final{text-align:center;padding:20px 0 10px}
+.gr-final .fl{font-family:var(--serif);font-size:22px;color:#f3e8d6;line-height:1.5;margin-bottom:18px}
+.gr-final .fl .sig{color:var(--gold2)}
 </style>
 
 <div id="particles"></div>
@@ -524,6 +586,28 @@ var GIFT_CAPTIONS   = ["", ""];
 var GIFT_OUTRO      = "te amo princesssss 🤍 gracias por ser mi todo. — Tu bebe";
 /* mensaje de WhatsApp cuando ella reacciona a los regalos */
 var GIFT_REACTION   = "acabo de abrir mis regalos 😭🤍";
+/* === "ÚLTIMA PÁGINA" inmersiva (se abre con la clave interna) === */
+var GIFT_HERO_TITLE = "PARA TI, VICKY";
+var GIFT_HERO_SUB   = "llegaste a lo más adentro de todo, goofy 🤍";
+/* carta final — EDÍTALA como quieras (usa \\n para saltos de línea) */
+var GIFT_LETTER =
+"Princesita goofy;\n\n"+
+"llegaste hasta aquí. hasta lo más adentro de todo. igual que llegaste a lo más adentro de mí sin que me diera cuenta.\n\n"+
+"estos 14 días te hice buscar palabras, jugar y esperar... pero la verdad todo esto era una sola cosa: una excusa para estar contigo aunque estuviera lejos. para que cada día pensaras en mí, como yo pensé en ti cada segundo.\n\n"+
+"mira todo lo que somos. de antes a ahora. cada foto es una razón más por la que no me quiero perder ni un día más sin ti.\n\n"+
+"ya no falta nada, mi reina. mañana te veo y no te suelto. gracias por ser mi paz, mi caos y mi todo. te amo princesssss 🤍\n\n"+
+"— Tu bebe";
+/* montaje: fotos de la historia (en orden). editable */
+var HISTORIA = [
+  {src:"photos/historia/h1.jpg", date:"sep 2025", cap:"donde empezó todo"},
+  {src:"photos/historia/h2.jpg", date:"oct 2025", cap:""},
+  {src:"photos/historia/h3.jpg", date:"oct 2025", cap:""},
+  {src:"photos/historia/h4.jpg", date:"dic 2025", cap:"aquel día en el bote 🚤"},
+  {src:"photos/historia/h5.jpg", date:"dic 2025", cap:""},
+  {src:"photos/historia/h6.jpg", date:"dic 2025", cap:"israel 🤍"},
+  {src:"photos/historia/h7.jpg", date:"mar 2026", cap:""},
+  {src:"photos/historia/h8.jpg", date:"jun 2026", cap:"y míranos ahora"}
+];
 
 /* Panama = UTC-5. Day 1 = 2026-07-06 00:00 Panamá = 05:00 UTC. */
 function unlockMs(n){ return Date.UTC(2026,6,5+n,5,0,0); }        // n=1..14
@@ -1579,7 +1663,15 @@ function innerVaultStep(){
   return s;
 }
 function renderInnerVault(box){
-  if(S.innerOpened){ renderGifts(box); return; }
+  if(S.innerOpened){
+    box.innerHTML=
+      '<div class="iv-safe open">🔓</div>'+
+      '<div class="iv-title">'+esc(GIFT_OPEN_TITLE)+' 🤍</div>'+
+      '<div class="iv-caption">tu última página te sigue esperando 🎁</div>'+
+      '<button class="btn" id="ivReenter">volver a entrar 🤍</button>';
+    box.querySelector("#ivReenter").addEventListener("click",openGiftRoom);
+    return;
+  }
   box.innerHTML=
     '<div class="iv-safe">🔐</div>'+
     '<div class="iv-title">UNA BÓVEDA MÁS</div>'+
@@ -1591,13 +1683,12 @@ function renderInnerVault(box){
   function tryOpen(){
     if(norm(inp.value)===norm(INNER_KEY) && norm(inp.value)!==""){
       S.innerOpened=true; save();
-      // dramatic unlock: safe pops, gold flash, confetti + hearts, THEN the gifts
       var safe=box.querySelector(".iv-safe"); if(safe){ safe.textContent="🔓"; safe.classList.add("open"); }
-      goldFlash(); confetti(200,true);
+      goldFlash(); confetti(230,true);
       var r=box.getBoundingClientRect();
-      heartBurst(r.left+r.width/2, r.top+120, 20); sparkle(r.left+r.width/2, r.top+120, 22);
-      btn.disabled=true; inp.disabled=true;
-      setTimeout(function(){ renderGifts(box); }, 700);
+      heartBurst(r.left+r.width/2, r.top+120, 24); sparkle(r.left+r.width/2, r.top+120, 26);
+      btn.disabled=true; inp.disabled=true; btn.textContent="entrando... 🤍";
+      setTimeout(openGiftRoom, 850);
     } else {
       fail.textContent="esa no es... dile a tommy que te la recuerde 😏";
       box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
@@ -1606,25 +1697,115 @@ function renderInnerVault(box){
   btn.addEventListener("click",tryOpen);
   inp.addEventListener("keydown",function(e){ if(e.key==="Enter") tryOpen(); });
 }
-function renderGifts(box){
-  box.innerHTML=
-    '<div class="iv-safe open">🔓</div>'+
-    '<div class="iv-title">'+esc(GIFT_OPEN_TITLE)+'</div>'+
-    '<div class="iv-caption">'+esc(GIFT_INTRO)+'</div>'+
-    '<div class="iv-hint2">toca cada regalo para abrirlo 👆</div>'+
-    '<div id="giftGrid" class="fade-in"></div>'+
-    '<div id="giftOutro"></div>';
-  var grid=box.querySelector("#giftGrid"), outro=box.querySelector("#giftOutro");
-  var opened=0;
-  function onOpen(){
-    opened++;
-    if(opened>=GIFT_COUNT){
-      outro.appendChild(el(
-        '<div class="iv-outro"><div class="ol">'+esc(GIFT_OUTRO).replace("— Tu bebe","<span class='sig'>— Tu bebe</span>")+'</div>'+
-        '<a class="btn wa" target="_blank" rel="noopener" href="'+wa(GIFT_REACTION)+'">mándale tu reacción a Tommy 💬</a></div>'));
-    }
+
+/* ===================== ÚLTIMA PÁGINA (immersive gift room) ===================== */
+var _grMontage=null;
+function extraAvg(){
+  var s=0,c=0; for(var d=1;d<=13;d++){ if(S.extra[d]!=null){ s+=S.extra[d]; c++; } }
+  return c? Math.round(s/c) : 100;
+}
+function statCard(num,label,suffix){
+  suffix=suffix||"";
+  return '<div class="stat"><div class="num" data-to="'+num+'" data-suffix="'+suffix+'">0'+suffix+'</div><div class="lbl">'+esc(label)+'</div></div>';
+}
+function animateStats(sec){
+  $$(".stat .num",sec).forEach(function(node){
+    var to=+node.getAttribute("data-to"), suf=node.getAttribute("data-suffix")||"", t0=null;
+    function step(ts){ if(t0==null)t0=ts; var p=Math.min(1,(ts-t0)/1100); node.textContent=Math.round(to*(1-Math.pow(1-p,3)))+suf; if(p<1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  });
+}
+function buildMontage(box){
+  var n=HISTORIA.length, html="";
+  for(var i=0;i<n;i++){ html+='<div class="mslide" style="background-image:url(\''+HISTORIA[i].src+'\')"></div>'; }
+  html+='<div class="mgrad"></div><div class="mdate" id="mdate"></div><div class="mcap" id="mcap"></div>'+
+        '<div class="mtap l" id="mprev"></div><div class="mtap r" id="mnext"></div><div class="mdots" id="mdots"></div>';
+  box.innerHTML=html;
+  var slides=$$(".mslide",box), dateEl=box.querySelector("#mdate"), capEl=box.querySelector("#mcap"), dotsEl=box.querySelector("#mdots");
+  for(var j=0;j<n;j++) dotsEl.appendChild(el('<div class="mdot"></div>'));
+  var dots=$$(".mdot",box), cur=-1, timer=null, playing=false;
+  function show(k){
+    k=(k+n)%n;
+    if(slides[cur]) slides[cur].classList.remove("active");
+    cur=k; slides[cur].classList.add("active");
+    dateEl.textContent=HISTORIA[cur].date;
+    capEl.style.opacity="0";
+    setTimeout(function(){ capEl.textContent=HISTORIA[cur].cap||""; capEl.style.opacity="1"; },250);
+    dots.forEach(function(dd,ii){ dd.classList.toggle("on",ii===cur); });
   }
-  for(var n=1;n<=GIFT_COUNT;n++) grid.appendChild(giftCard(n, onOpen));
+  function schedule(){ if(timer)clearTimeout(timer); timer=setTimeout(function(){ if(playing){ show(cur+1); schedule(); } },3700); }
+  box.querySelector("#mnext").addEventListener("click",function(){ show(cur+1); schedule(); });
+  box.querySelector("#mprev").addEventListener("click",function(){ show(cur-1); schedule(); });
+  show(0);
+  _grMontage={ play:function(){ if(playing)return; playing=true; schedule(); }, stop:function(){ playing=false; if(timer)clearTimeout(timer); } };
+}
+function closeGiftRoom(){
+  if(_grMontage){ _grMontage.stop(); _grMontage=null; }
+  var gr=$("#giftRoom"); if(!gr) return;
+  gr.classList.remove("on");
+  setTimeout(function(){ if(gr.parentNode) gr.parentNode.removeChild(gr); },650);
+}
+function openGiftRoom(){
+  closeGiftRoom();
+  var gr=el('<div id="giftRoom"><div id="grHearts"></div><div class="gr-wrap"></div></div>');
+  document.body.appendChild(gr);
+  var hc=gr.querySelector("#grHearts");
+  for(var i=0;i<16;i++){
+    var h=document.createElement("div"); h.className="grh"; h.textContent=["❤️","💛","🤍"][i%3];
+    h.style.left=(Math.random()*100)+"%"; h.style.fontSize=(14+Math.random()*16)+"px";
+    var dur=9+Math.random()*10; h.style.animationDuration=dur+"s"; h.style.animationDelay=(-Math.random()*dur)+"s";
+    h.style.setProperty("--r",(Math.random()*80-40)+"deg"); hc.appendChild(h);
+  }
+  var wrap=gr.querySelector(".gr-wrap");
+  var top=el('<div class="gr-top"><button class="back" id="grBack">← volver</button></div>');
+  wrap.appendChild(top); top.querySelector("#grBack").addEventListener("click",closeGiftRoom);
+  // hero
+  wrap.appendChild(el('<div class="gr-hero"><div class="crown">👑</div><h1>'+esc(GIFT_HERO_TITLE)+' 🤍</h1>'+
+    '<div class="sub">'+esc(GIFT_HERO_SUB)+'</div><div class="scroll">desliza ↓</div></div>'));
+  // letter
+  wrap.appendChild(el('<div class="gr-sec"><div class="gr-eyebrow">una última carta</div>'+
+    '<div class="gr-letter"><div class="lt">'+esc(GIFT_LETTER).replace("— Tu bebe","<span class='sig2'>— Tu bebe</span>")+'</div></div></div>'));
+  // montage
+  var monSec=el('<div class="gr-sec"><div class="gr-eyebrow">nuestra historia</div><div class="montage" id="montage"></div>'+
+    '<div style="text-align:center;font-family:var(--serif2);font-style:italic;color:var(--ink-dim);font-size:15px;margin-top:12px">de antes a ahora... y apenas empezamos 🤍</div></div>');
+  wrap.appendChild(monSec); buildMontage(monSec.querySelector("#montage"));
+  // stats
+  var statsSec=el('<div class="gr-sec"><div class="gr-eyebrow">nuestros números</div><div class="stats">'+
+    statCard(14,"días que aguantaste sin mí")+statCard(13,"palabras que encontraste 🗝️")+
+    statCard(11,"meses siendo mi todo 🤍")+statCard(extraAvg(),"cuánto me extrañaste (promedio)","%")+
+    '</div><div class="stat-inf"><b>∞</b> &nbsp;veces que te voy a morder cuando llegue 😤</div></div>');
+  wrap.appendChild(statsSec);
+  // gifts
+  var giftsSec=el('<div class="gr-sec gr-gifts"><div class="gr-eyebrow">y por último...</div>'+
+    '<div class="iv-title" style="text-align:center">TUS '+GIFT_COUNT+' REGALOS 🎁</div>'+
+    '<div class="iv-caption" style="text-align:center">'+esc(GIFT_INTRO)+'</div>'+
+    '<div class="iv-hint2" style="text-align:center">toca cada regalo para abrirlo 👆</div>'+
+    '<div id="giftGrid"></div><div id="giftOutro"></div></div>');
+  wrap.appendChild(giftsSec);
+  var grid=giftsSec.querySelector("#giftGrid"), outro=giftsSec.querySelector("#giftOutro"), opened=0;
+  function onOpen(){ opened++; if(opened>=GIFT_COUNT){
+    outro.appendChild(el('<div class="iv-outro"><div class="ol">'+esc(GIFT_OUTRO).replace("— Tu bebe","<span class='sig'>— Tu bebe</span>")+'</div>'+
+      '<a class="btn wa" target="_blank" rel="noopener" href="'+wa(GIFT_REACTION)+'">mándale tu reacción a Tommy 💬</a></div>'));
+  } }
+  for(var n=1;n<=GIFT_COUNT;n++) grid.appendChild(giftCard(n,onOpen));
+  // final
+  wrap.appendChild(el('<div class="gr-sec gr-final"><div class="fl">nos vemos MAÑANA, goofy.<br>y de aquí en adelante, todos los días. <span class="sig">— Tu bebe 🤍</span></div></div>'));
+  // scroll reveal + triggers
+  var obs=new IntersectionObserver(function(ents){ ents.forEach(function(e){ if(e.isIntersecting){
+    e.target.classList.add("seen");
+    if(e.target===statsSec && !statsSec.getAttribute("data-animated")){ statsSec.setAttribute("data-animated","1"); animateStats(statsSec); }
+    if(e.target===monSec && _grMontage) _grMontage.play();
+    obs.unobserve(e.target);
+  } }); },{threshold:0.2});
+  $$(".gr-sec",wrap).forEach(function(s){ obs.observe(s); });
+  gr.scrollTop=0;
+  setTimeout(function(){ gr.classList.add("on"); }, 40);
+  // safety net: if IntersectionObserver never fires (e.g. tab was backgrounded), reveal everything anyway
+  setTimeout(function(){
+    $$(".gr-sec",wrap).forEach(function(s){ if(!s.classList.contains("seen")) s.classList.add("seen"); });
+    if(!statsSec.getAttribute("data-animated")){ statsSec.setAttribute("data-animated","1"); animateStats(statsSec); }
+    if(_grMontage) _grMontage.play();
+  }, 3000);
 }
 function giftCard(n, onOpen){
   var wrap=el('<div class="gift-item"><div class="gift-label">regalo '+n+'</div><div class="gift-slot"></div></div>');
