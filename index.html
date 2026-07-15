@@ -407,6 +407,40 @@ input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;bor
 .gift-ph .em{font-size:36px;display:block;margin-bottom:8px}
 .gift-ph .sm{font-size:12.5px;color:var(--ink-faint);display:block;margin-top:6px}
 .gift-label{font-family:var(--serif);color:var(--gold2);font-size:14px;text-align:left;padding:2px 2px 8px;letter-spacing:.5px}
+.inner-vault{position:relative;overflow:hidden}
+.iv-hint2{font-size:13px;color:var(--ink-faint);margin:-6px 0 16px}
+.gift-item{margin-bottom:16px}
+.gift-slot{position:relative}
+/* wrapped gift box */
+.gift-box{position:relative;width:100%;aspect-ratio:5/3;border-radius:16px;cursor:pointer;overflow:hidden;
+  background:linear-gradient(135deg,#7c2c48,#3a1330);border:1px solid var(--gold);
+  box-shadow:0 10px 26px rgba(0,0,0,.45), inset 0 0 40px rgba(0,0,0,.25);animation:bob 2.6s ease-in-out infinite;transform-origin:center}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-.6deg)}50%{transform:translateY(-5px) rotate(.6deg)}}
+.gift-box::before{content:"";position:absolute;top:0;bottom:0;left:50%;width:15%;transform:translateX(-50%);
+  background:linear-gradient(180deg,var(--gold2),var(--gold-deep));box-shadow:0 0 12px rgba(233,200,119,.4)}
+.gift-box::after{content:"";position:absolute;left:0;right:0;top:50%;height:26%;transform:translateY(-50%);
+  background:linear-gradient(90deg,var(--gold-deep),var(--gold2));box-shadow:0 0 12px rgba(233,200,119,.4)}
+.gift-box .bow{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);font-size:44px;z-index:3;filter:drop-shadow(0 3px 8px rgba(0,0,0,.5))}
+.gift-box .tap{position:absolute;bottom:9px;left:0;right:0;text-align:center;font-size:12.5px;color:#fff;letter-spacing:.3px;text-shadow:0 1px 5px #000;z-index:3}
+.gift-box .shine{position:absolute;top:0;left:-60%;width:50%;height:100%;z-index:2;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.35),transparent);animation:shine 3.2s ease-in-out infinite}
+@keyframes shine{0%{left:-60%}45%,100%{left:130%}}
+.gift-box.opening{animation:giftpop .55s cubic-bezier(.3,1.5,.5,1) forwards}
+@keyframes giftpop{0%{transform:scale(1) rotate(0)}35%{transform:scale(1.14) rotate(3deg)}100%{transform:scale(.2) rotate(-8deg);opacity:0}}
+/* revealed photo */
+.gift-photo{border-radius:16px;overflow:hidden;border:1px solid var(--gold);box-shadow:0 0 0 1px rgba(233,200,119,.35),0 12px 30px rgba(0,0,0,.5);
+  animation:giftshow .6s cubic-bezier(.2,1.25,.35,1) both}
+@keyframes giftshow{from{opacity:0;transform:scale(.82) translateY(8px)}to{opacity:1;transform:none}}
+.gift-photo img{width:100%;display:block}
+.gift-cap{font-family:var(--serif2);font-style:italic;color:var(--gold2);font-size:17px;text-align:center;padding:12px 12px 6px;line-height:1.45}
+.iv-outro{text-align:center;margin-top:6px;animation:fadeUp .8s both}
+.iv-outro .ol{font-family:var(--serif);font-size:18px;color:#f2e7d4;line-height:1.5;margin-bottom:14px}
+.iv-outro .ol .sig{color:var(--gold2)}
+/* gold flash on unlock */
+.gold-flash{position:fixed;inset:0;z-index:78;pointer-events:none;opacity:0;transition:opacity .3s;
+  background:radial-gradient(circle at 50% 42%, rgba(255,244,210,.6), rgba(233,200,119,.18) 42%, transparent 72%)}
+.gold-flash.on{opacity:1}
+.sparkfx{position:fixed;pointer-events:none;z-index:77;font-size:18px;will-change:transform,opacity}
 
 .footer-note{text-align:center;color:var(--ink-faint);font-size:12px;margin-top:30px;font-family:var(--serif2);font-style:italic}
 .debug-badge{position:fixed;bottom:8px;right:8px;z-index:90;background:rgba(233,90,110,.85);color:#fff;font-size:10px;font-weight:700;padding:4px 9px;border-radius:99px;letter-spacing:.5px}
@@ -482,6 +516,14 @@ var HER = "Vicky", ME = "Tommy";
 var INNER_KEY = "abreme";
 /* cuántos regalos hay adentro (fotos: photos/regalo1.jpg, regalo2.jpg, ...) */
 var GIFT_COUNT = 2;
+/* === TEXTOS DE LOS REGALOS (edítalos como quieras) === */
+var GIFT_OPEN_TITLE = "PARA TI, VICKY 🤍";
+var GIFT_INTRO      = "abriste la última bóveda, goofy. esto es lo que te tenía guardado 🎁";
+/* una nota cute por regalo (déjala "" si no quieres nota). GIFT_CAPTIONS[0] = regalo 1 */
+var GIFT_CAPTIONS   = ["", ""];
+var GIFT_OUTRO      = "te amo princesssss 🤍 gracias por ser mi todo. — Tu bebe";
+/* mensaje de WhatsApp cuando ella reacciona a los regalos */
+var GIFT_REACTION   = "acabo de abrir mis regalos 😭🤍";
 
 /* Panama = UTC-5. Day 1 = 2026-07-06 00:00 Panamá = 05:00 UTC. */
 function unlockMs(n){ return Date.UTC(2026,6,5+n,5,0,0); }        // n=1..14
@@ -723,6 +765,31 @@ function heartBurst(x,y,n){
       setTimeout(function(){ h.remove(); },1800);
     })(i);
   }
+}
+
+/* sparkle burst (gifts) */
+function sparkle(x,y,n){
+  n=n||16;
+  var chars=["✨","⭐","🤍","💛"];
+  for(var i=0;i<n;i++){
+    (function(){
+      var s=document.createElement("div"); s.className="sparkfx"; s.textContent=chars[(Math.random()*chars.length)|0];
+      s.style.left=x+"px"; s.style.top=y+"px";
+      document.body.appendChild(s);
+      var ang=Math.random()*Math.PI*2, dist=50+Math.random()*140;
+      var dx=Math.cos(ang)*dist, dy=Math.sin(ang)*dist;
+      s.animate([{transform:"translate(0,0) scale(.3) rotate(0)",opacity:1},
+        {transform:"translate("+dx+"px,"+dy+"px) scale("+(0.8+Math.random()*1.1)+") rotate("+(Math.random()*180-90)+"deg)",opacity:0}],
+        {duration:900+Math.random()*700,easing:"cubic-bezier(.15,.8,.3,1)"});
+      setTimeout(function(){ s.remove(); },1700);
+    })();
+  }
+}
+/* full-screen gold flash */
+function goldFlash(){
+  var f=el('<div class="gold-flash"></div>'); document.body.appendChild(f);
+  requestAnimationFrame(function(){ f.classList.add("on"); });
+  setTimeout(function(){ f.classList.remove("on"); setTimeout(function(){ f.remove(); },400); }, 260);
 }
 
 /* key pop overlay (given/earned words) */
@@ -1524,8 +1591,13 @@ function renderInnerVault(box){
   function tryOpen(){
     if(norm(inp.value)===norm(INNER_KEY) && norm(inp.value)!==""){
       S.innerOpened=true; save();
-      confetti(180,true);
-      renderGifts(box);
+      // dramatic unlock: safe pops, gold flash, confetti + hearts, THEN the gifts
+      var safe=box.querySelector(".iv-safe"); if(safe){ safe.textContent="🔓"; safe.classList.add("open"); }
+      goldFlash(); confetti(200,true);
+      var r=box.getBoundingClientRect();
+      heartBurst(r.left+r.width/2, r.top+120, 20); sparkle(r.left+r.width/2, r.top+120, 22);
+      btn.disabled=true; inp.disabled=true;
+      setTimeout(function(){ renderGifts(box); }, 700);
     } else {
       fail.textContent="esa no es... dile a tommy que te la recuerde 😏";
       box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
@@ -1537,23 +1609,49 @@ function renderInnerVault(box){
 function renderGifts(box){
   box.innerHTML=
     '<div class="iv-safe open">🔓</div>'+
-    '<div class="iv-title">TUS '+GIFT_COUNT+' REGALOS 🎁</div>'+
-    '<div class="iv-caption">esto es lo que te tenía guardado, princesa. te amo princesssss 🤍</div>'+
-    '<div id="giftGrid" class="fade-in"></div>';
-  var grid=box.querySelector("#giftGrid");
-  for(var n=1;n<=GIFT_COUNT;n++) grid.appendChild(giftCard(n));
+    '<div class="iv-title">'+esc(GIFT_OPEN_TITLE)+'</div>'+
+    '<div class="iv-caption">'+esc(GIFT_INTRO)+'</div>'+
+    '<div class="iv-hint2">toca cada regalo para abrirlo 👆</div>'+
+    '<div id="giftGrid" class="fade-in"></div>'+
+    '<div id="giftOutro"></div>';
+  var grid=box.querySelector("#giftGrid"), outro=box.querySelector("#giftOutro");
+  var opened=0;
+  function onOpen(){
+    opened++;
+    if(opened>=GIFT_COUNT){
+      outro.appendChild(el(
+        '<div class="iv-outro"><div class="ol">'+esc(GIFT_OUTRO).replace("— Tu bebe","<span class='sig'>— Tu bebe</span>")+'</div>'+
+        '<a class="btn wa" target="_blank" rel="noopener" href="'+wa(GIFT_REACTION)+'">mándale tu reacción a Tommy 💬</a></div>'));
+    }
+  }
+  for(var n=1;n<=GIFT_COUNT;n++) grid.appendChild(giftCard(n, onOpen));
 }
-function giftCard(n){
-  var wrap=el('<div><div class="gift-label">regalo '+n+'</div><div class="gift-card"></div></div>');
-  var card=wrap.querySelector(".gift-card");
+function giftCard(n, onOpen){
+  var wrap=el('<div class="gift-item"><div class="gift-label">regalo '+n+'</div><div class="gift-slot"></div></div>');
+  var slot=wrap.querySelector(".gift-slot");
+  var boxw=el('<div class="gift-box"><div class="shine"></div><div class="bow">🎀</div><div class="tap">toca para abrir 👆</div></div>');
+  slot.appendChild(boxw);
+  boxw.addEventListener("click",function(){
+    if(boxw.classList.contains("opening")) return;
+    var r=boxw.getBoundingClientRect();
+    sparkle(r.left+r.width/2, r.top+r.height/2, 18); heartBurst(r.left+r.width/2, r.top+r.height/2, 10);
+    boxw.classList.add("opening");
+    setTimeout(function(){ slot.innerHTML=""; slot.appendChild(giftReveal(n)); if(onOpen) onOpen(); }, 520);
+  });
+  return wrap;
+}
+function giftReveal(n){
+  var wrap=el('<div class="gift-photo"></div>');
   var ph=el('<div class="gift-ph"><span class="em">🎁</span>sorpresa cargando...<span class="sm">tommy la sube pronto 😌</span></div>');
-  card.appendChild(ph);
+  wrap.appendChild(ph);
   var img=document.createElement("img");
   img.alt="regalo "+n; img.style.display="none";
   img.addEventListener("load",function(){ ph.style.display="none"; img.style.display="block"; });
   img.addEventListener("error",function(){ /* deja el placeholder bonito */ });
   img.src="photos/regalo"+n+".jpg";
-  card.appendChild(img);
+  wrap.appendChild(img);
+  var cap=GIFT_CAPTIONS[n-1];
+  if(cap) wrap.appendChild(el('<div class="gift-cap">'+esc(cap)+'</div>'));
   return wrap;
 }
 
